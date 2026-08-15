@@ -6,6 +6,18 @@
   <title>Pet Care & Veterinária (Demonstrativo) — Carteira de Imóveis & Consultoria</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    function switchTheme(themeName, btn) {
+      document.body.className = 'theme-' + themeName;
+      var btns = document.querySelectorAll('.theme-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+      }
+      if (btn) {
+        btn.classList.add('active');
+      }
+    }
+  </script>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
     
@@ -221,20 +233,16 @@
   </div>
 
   <script>
-    var propertiesData = JSON.parse('[{"title":"Banho & Tosa Completo + Hidratação de Pelagem","desc":"Corte de unhas, limpeza de ouvidos, escovação dentária e hidratação com shampoo hipoalergênico.","categoria":"Banho & Tosa","priceStr":"R$ 90,00","price":90,"image":"https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&auto=format&fit=crop&q=80"},{"title":"Consulta Veterinária Preventiva + Vacina V10","desc":"Avaliação clínica de saúde geral, auscultação cardíaca e aplicação de vacina polivalente importada.","categoria":"Veterinária","priceStr":"R$ 180,00","price":180,"image":"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&auto=format&fit=crop&q=80"}]');
+    var rawCatalog = "%5B%7B%22title%22%3A%22Banho%20%26%20Tosa%20Completo%20%2B%20Hidrata%C3%A7%C3%A3o%20de%20Pelagem%22%2C%22desc%22%3A%22Corte%20de%20unhas%2C%20limpeza%20de%20ouvidos%2C%20escova%C3%A7%C3%A3o%20dent%C3%A1ria%20e%20hidrata%C3%A7%C3%A3o%20com%20shampoo%20hipoalerg%C3%AAnico.%22%2C%22categoria%22%3A%22Banho%20%26%20Tosa%22%2C%22priceStr%22%3A%22R%24%2090%2C00%22%2C%22price%22%3A90%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1516734212186-a967f81ad0d7%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%2C%7B%22title%22%3A%22Consulta%20Veterin%C3%A1ria%20Preventiva%20%2B%20Vacina%20V10%22%2C%22desc%22%3A%22Avalia%C3%A7%C3%A3o%20cl%C3%ADnica%20de%20sa%C3%BAde%20geral%2C%20ausculta%C3%A7%C3%A3o%20card%C3%ADaca%20e%20aplica%C3%A7%C3%A3o%20de%20vacina%20polivalente%20importada.%22%2C%22categoria%22%3A%22Veterin%C3%A1ria%22%2C%22priceStr%22%3A%22R%24%20180%2C00%22%2C%22price%22%3A180%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1548199973-03cce0bbc87b%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%5D";
+    var propertiesData = [];
+    try {
+      propertiesData = JSON.parse(decodeURIComponent(rawCatalog));
+    } catch(e) {
+      console.error("Error parsing catalog JSON:", e);
+    }
+    
     var phone = "5513996351877";
     var mapsUrl = "https://www.google.com/maps?q=Florianopolis+SC";
-
-    function switchTheme(themeName, btn) {
-      document.body.className = 'theme-' + themeName;
-      var btns = document.querySelectorAll('.theme-btn');
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].classList.remove('active');
-      }
-      if (btn) {
-        btn.classList.add('active');
-      }
-    }
 
     // Build unique category pills
     (function initCategoryPills() {
