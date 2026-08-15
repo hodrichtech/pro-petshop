@@ -19,13 +19,14 @@
     .btn-h:hover { background:rgba(255,255,255,0.14); }
     .btn-vitrine { background:linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 65%, #000)); border:none; color:#fff; }
 
-    .split { display:flex; flex:1; overflow:hidden; }
+    .split { display:flex; flex:1; height: calc(100vh - 65px); overflow:hidden; }
 
-    /* EDITOR */
-    .editor { width:400px; min-width:360px; overflow-y:auto; border-right:1px solid rgba(255,255,255,0.08); padding:16px; background:#060910; flex-shrink:0; }
+    /* EDITOR MENU - PROPORTIONAL & SPACIOUS */
+    .editor { width:480px; min-width:440px; max-width:520px; flex: 0 0 480px; overflow-y:auto; border-right:1px solid rgba(255,255,255,0.1); padding:20px; background:#060910; box-sizing:border-box; }
 
-    /* MOBILE PREVIEW */
-    .preview-col { flex:1; background:#0b0f1a; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:16px; }
+    /* MOBILE PREVIEW COL */
+    .preview-col { flex:1; min-width:380px; background:#0b0f1a; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:20px; box-sizing:border-box; }
+    .phone { width:340px; height:660px; max-height: calc(100vh - 120px); background:#000; border:12px solid #1e293b; border-radius:40px; box-shadow:0 30px 80px rgba(0,0,0,0.9); overflow:hidden; display:flex; flex-direction:column; }
     .preview-label { font-size:0.72rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
     .phone { width:310px; height:620px; background:#000; border:10px solid #1e293b; border-radius:36px; box-shadow:0 30px 80px rgba(0,0,0,0.9); overflow:hidden; display:flex; flex-direction:column; }
     .phone-notch { height:20px; background:#1e293b; width:40%; margin:0 auto; border-radius:0 0 12px 12px; flex-shrink:0; }
