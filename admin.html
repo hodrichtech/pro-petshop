@@ -142,10 +142,10 @@
         <div style="border-top:1px dashed rgba(255,255,255,0.1);padding-top:12px;margin-top:8px;">
           <div style="font-size:0.78rem;font-weight:800;color:#fbbf24;margin-bottom:8px;"><i class="fa-solid fa-plus"></i> Adicionar Item</div>
           <div class="fg" id="tipo-grp">
-            <label id="label-tipo-item">Tipo de Item</label>
-            <select id="n-tipo" class="fi" onchange="toggleEstoque(this.value)">
-              <option value="servico">💇 Serviço / Atendimento</option>
-              <option value="produto">📦 Produto com Estoque</option>
+            <label id="label-tipo-item" style="color:#fbbf24; font-weight:800;"><i class="fa-solid fa-layer-group"></i> Tipo de Item</label>
+            <select id="n-tipo" class="fi" onchange="toggleEstoque(this.value)" style="border-color:#f59e0b;">
+              <option value="servico">💇 Serviço (Sem controle de estoque)</option>
+              <option value="produto">📦 Produto com Estoque (Com quantidade física)</option>
             </select>
           </div>
           <div class="fg"><label id="label-n-title">Nome do Item</label><input id="n-title" class="fi" placeholder="ex: Nome do item..."></div>
@@ -153,9 +153,11 @@
             <div class="fg"><label id="label-n-cat">Categoria</label><input id="n-cat" class="fi" placeholder="Serviço, Produto..."></div>
             <div class="fg"><label id="label-n-price">Preço / Valor</label><input id="n-price" class="fi" placeholder="R$ 80,00"></div>
           </div>
-          <div id="estoque-grp" style="display:none; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:10px; margin-bottom:9px;">
-            <label style="color:#fbbf24;font-weight:800;font-size:0.75rem;"><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque</label>
-            <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b; margin-top:4px;">
+          <!-- ESTOQUE: visível em destaque se tipo = produto -->
+          <div id="estoque-grp" style="display:none; background:rgba(245,158,11,0.12); border:2px solid #f59e0b; border-radius:10px; padding:10px; margin-bottom:9px;">
+            <label style="color:#fbbf24;font-weight:800;font-size:0.8rem;"><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque (Unidades)</label>
+            <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b; font-weight:800; color:#fbbf24; font-size:1rem; margin-top:4px;">
+            <div style="font-size:0.7rem; color:#fcd34d; margin-top:3px;">Unidades físicas disponíveis para entrega/venda</div>
           </div>
           <div class="fg"><label>URL da Foto (Google Drive ou Web)</label><input id="n-img" class="fi" placeholder="https://..."></div>
           <button class="btn-add" onclick="addItem()"><i class="fa-solid fa-plus-circle"></i> Confirmar Item</button>
