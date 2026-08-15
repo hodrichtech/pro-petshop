@@ -670,21 +670,25 @@ function getData() {
 
 // ─── LIVE PREVIEW ─────────────────────────────────────────────────────────────
 function preview() {
-  var data = getData();
-  var html = '';
-  var plano = data.plano;
-  if (plano === 'master') html = clientRenderMaster(data);
-  else if (plano === 'ecommerce') html = clientRenderEcommerce(data);
-  else if (plano === 'pro') html = clientRenderPro(data);
-  else html = clientRenderBasico(data);
+  try {
+    var data = getData();
+    var html = '';
+    var plano = data.plano || 'basico';
+    if (typeof clientRenderMaster === 'function' && plano === 'master') html = clientRenderMaster(data);
+    else if (typeof clientRenderEcommerce === 'function' && plano === 'ecommerce') html = clientRenderEcommerce(data);
+    else if (typeof clientRenderPro === 'function' && plano === 'pro') html = clientRenderPro(data);
+    else if (typeof clientRenderBasico === 'function') html = clientRenderBasico(data);
 
-  // Usa contentDocument.write para máxima compatibilidade
-  var iframe = document.getElementById('previewFrame');
-  iframe.contentDocument.open();
-  iframe.contentDocument.write(html);
-  iframe.contentDocument.close();
-
-  updateProgress(data);
+    var iframe = document.getElementById('previewFrame') || document.getElementById('iframe-live-preview') || document.getElementById('previewIframe');
+    if (iframe && iframe.contentDocument) {
+      iframe.contentDocument.open();
+      iframe.contentDocument.write(html);
+      iframe.contentDocument.close();
+    }
+    if (typeof updateProgress === 'function') updateProgress(data);
+  } catch (e) {
+    console.warn('Preview update error:', e.message);
+  }
 }
 
 // ─── PROGRESSO ────────────────────────────────────────────────────────────────
