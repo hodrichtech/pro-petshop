@@ -274,6 +274,24 @@
             <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b; font-weight:800; color:#fbbf24; font-size:1rem; margin-top:4px;">
             <div style="font-size:0.7rem; color:#fcd34d; margin-top:3px;">Unidades físicas disponíveis para entrega/venda</div>
           </div>
+          
+          <!-- CAMPOS ESPECIALIZADOS DE IMÓVEIS (SE SEGMENTO IMOBILIÁRIA / PLANO PRO) -->
+          <div id="grp-imovel-fields" style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:12px; margin-bottom:12px;">
+            <div style="color:#38bdf8; font-weight:800; font-size:0.85rem; margin-bottom:8px;"><i class="fa-solid fa-house-chimney"></i> Ficha Técnica do Imóvel (Especial Imobiliária)</div>
+            <div class="fr">
+              <div class="fg"><label>Modalidade</label><select id="n-modalidade" class="fi"><option value="Venda">Venda</option><option value="Aluguel">Aluguel Residencial</option><option value="Aluguel Temporada">Aluguel Temporada</option><option value="Comercial">Comercial / Sala</option><option value="Lançamento">Lançamento / Planta</option></select></div>
+              <div class="fg"><label>Código Ref</label><input id="n-ref" class="fi" placeholder="Ex: REF-101"></div>
+              <div class="fg"><label>Bairro / Cidade</label><input id="n-bairro" class="fi" placeholder="Ex: Gonzaga - Santos/SP"></div>
+            </div>
+            <div class="fr" style="margin-top:6px;">
+              <div class="fg"><label>Quartos</label><select id="n-quartos" class="fi"><option value="1 Quarto">1 Quarto</option><option value="2 Quartos">2 Quartos</option><option value="3 Quartos" selected>3 Quartos</option><option value="4+ Quartos">4+ Quartos</option></select></div>
+              <div class="fg"><label>Suítes</label><select id="n-suites" class="fi"><option value="0 Suítes">0 Suítes</option><option value="1 Suíte">1 Suíte</option><option value="2 Suítes">2 Suítes</option><option value="3+ Suítes" selected>3+ Suítes</option></select></div>
+              <div class="fg"><label>Vagas Garagem</label><select id="n-vagas" class="fi"><option value="0 Vagas">0 Vagas</option><option value="1 Vaga">1 Vaga</option><option value="2 Vagas" selected>2 Vagas</option><option value="3+ Vagas">3+ Vagas</option></select></div>
+              <div class="fg"><label>Área Útil</label><input id="n-area" class="fi" placeholder="Ex: 140 m²"></div>
+            </div>
+            <div class="fg" style="margin-top:6px;"><label>Diferenciais & Tags (separados por vírgula)</label><input id="n-tags" class="fi" placeholder="Ex: Vista Mar, Varanda Gourmet, Piscina, Portaria 24h"></div>
+          </div>
+
           <div class="fg"><label>URL da Foto (Google Drive ou Web)</label><input id="n-img" class="fi" placeholder="https://..."></div>
           <button class="btn-add" onclick="addItem()"><i class="fa-solid fa-plus-circle"></i> Confirmar Item</button>
         </div>
