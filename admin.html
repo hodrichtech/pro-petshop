@@ -174,7 +174,77 @@
         </div>
       </div>
       <div style="display:flex;justify-content:space-between">
-        <button class="btn-h" onclick="goStep(1)">⬅ Empresa</button>
+              <!-- NO-CODE MAX CUSTOMIZER -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--brand)"></i> Construtor Visual No-Code (Personalização Máxima)</div>
+        
+        <div class="fg">
+          <label><i class="fa-solid fa-font"></i> Fonte Tipográfica da Vitrine</label>
+          <select id="n-fonte" class="fi" onchange="applyCustomFont(this.value)">
+            <option value="Outfit">Outfit (Moderno & Tech)</option>
+            <option value="Inter" selected>Inter (Executivo Clean)</option>
+            <option value="Poppins">Poppins (Vibrante & Arredondado)</option>
+            <option value="Roboto">Roboto (Padrão & Alta Legibilidade)</option>
+            <option value="Playfair Display">Playfair Display (Luxo & Elegante)</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label><i class="fa-solid fa-circle-half-stroke"></i> Modo de Fundo do Site</label>
+          <select id="n-bgMode" class="fi" onchange="applyBgMode(this.value)">
+            <option value="theme-dark" selected>🌙 Noturno Obsidian (Escuro)</option>
+            <option value="theme-light">☀️ Claro Minimalista (Branco)</option>
+            <option value="theme-vibrant">⚡ Vibrante High-Contrast</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label><i class="fa-solid fa-image"></i> Imagem / Textura de Fundo Customizada (Opcional)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="n-bgImage" placeholder="https://exemplo.com/fundo.jpg" class="fi" style="flex:1;" oninput="applyBgImage(this.value)">
+            <button type="button" onclick="toggleBgImage()" class="btn-h" style="width:auto; font-size:0.75rem; padding:8px 12px;">🖼️ Alternar Fundo</button>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label style="color:#fbbf24; font-weight:800;"><i class="fa-solid fa-arrows-up-down"></i> 🧱 Reordenar Seções da Vitrine (Clique para Mover)</label>
+          <div style="display:grid; gap:6px; margin-top:4px;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;">
+              <span>🏪 1. Banner, Logo & Apresentação Principal</span>
+              <span style="font-size:0.7rem; color:#94a3b8;">Topo Fixado</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;">
+              <span>📦 2. Catálogo de Produtos & Serviços</span>
+              <div>
+                <button type="button" onclick="moveSection('catalog', 'up')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬆</button>
+                <button type="button" onclick="moveSection('catalog', 'down')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬇</button>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;">
+              <span>🖼️ 3. Galeria de Trabalhos & Fotos</span>
+              <div>
+                <button type="button" onclick="moveSection('gallery', 'up')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬆</button>
+                <button type="button" onclick="moveSection('gallery', 'down')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬇</button>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;">
+              <span>⭐ 4. Depoimentos de Clientes</span>
+              <div>
+                <button type="button" onclick="moveSection('reviews', 'up')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬆</button>
+                <button type="button" onclick="moveSection('reviews', 'down')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬇</button>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;">
+              <span>📍 5. Informações & Google Maps</span>
+              <div>
+                <button type="button" onclick="moveSection('location', 'up')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬆</button>
+                <button type="button" onclick="moveSection('location', 'down')" style="background:#334155; border:none; color:#fff; padding:3px 6px; border-radius:4px; cursor:pointer;">⬇</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-h" onclick="goStep(1)">⬅ Empresa</button>
         <button class="btn-h btn-vitrine" onclick="goStep(3)">Catálogo 📦 ➔</button>
       </div>
     </div>
