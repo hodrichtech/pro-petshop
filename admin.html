@@ -137,27 +137,27 @@
     <!-- STEP 3 -->
     <div id="step-3" class="step">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-boxes-stacked" style="color:var(--brand)"></i> Itens do Catálogo</div>
+        <div class="card-title"><i class="fa-solid fa-boxes-stacked" style="color:var(--brand)"></i> <span id="add-item-title">Itens do Catálogo</span></div>
         <div id="catalog-list"></div>
         <div style="border-top:1px dashed rgba(255,255,255,0.1);padding-top:12px;margin-top:8px;">
           <div style="font-size:0.78rem;font-weight:800;color:#fbbf24;margin-bottom:8px;"><i class="fa-solid fa-plus"></i> Adicionar Item</div>
-          <div class="fg">
-            <label>Tipo</label>
+          <div class="fg" id="tipo-grp">
+            <label id="label-tipo-item">Tipo de Item</label>
             <select id="n-tipo" class="fi" onchange="toggleEstoque(this.value)">
               <option value="servico">💇 Serviço / Atendimento</option>
               <option value="produto">📦 Produto com Estoque</option>
             </select>
           </div>
-          <div class="fg"><label>Nome do Item</label><input id="n-title" class="fi" placeholder="ex: Corte Feminino, Kit Shampoo..."></div>
+          <div class="fg"><label id="label-n-title">Nome do Item</label><input id="n-title" class="fi" placeholder="ex: Nome do item..."></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div class="fg"><label>Categoria</label><input id="n-cat" class="fi" placeholder="Serviço, Produto..."></div>
-            <div class="fg"><label>Preço</label><input id="n-price" class="fi" placeholder="R$ 80,00"></div>
+            <div class="fg"><label id="label-n-cat">Categoria</label><input id="n-cat" class="fi" placeholder="Serviço, Produto..."></div>
+            <div class="fg"><label id="label-n-price">Preço / Valor</label><input id="n-price" class="fi" placeholder="R$ 80,00"></div>
           </div>
-          <div id="estoque-grp" style="display:none" class="fg">
-            <label style="color:#fbbf24;font-weight:800;">📦 Quantidade em Estoque</label>
-            <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b">
+          <div id="estoque-grp" style="display:none; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:10px; margin-bottom:9px;">
+            <label style="color:#fbbf24;font-weight:800;font-size:0.75rem;"><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque</label>
+            <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b; margin-top:4px;">
           </div>
-          <div class="fg"><label>URL da Foto</label><input id="n-img" class="fi" placeholder="https://..."></div>
+          <div class="fg"><label>URL da Foto (Google Drive ou Web)</label><input id="n-img" class="fi" placeholder="https://..."></div>
           <button class="btn-add" onclick="addItem()"><i class="fa-solid fa-plus-circle"></i> Confirmar Item</button>
         </div>
       </div>
@@ -438,6 +438,55 @@ function clientRenderPro(mei) {
 }
 
 
+var SEGMENT_CONFIG = {
+  'master-salao':       { hasTipo: true,  labels: { servico: '💇 Serviço (ex: Corte, Escova, Manicure)', produto: '📦 Produto com Estoque (ex: Shampoo, Creme)', title: 'Nome do Serviço ou Produto', cat: 'Categoria (ex: Cabelo, Unhas, Produto)', price: 'Preço (ex: R$ 80,00)' } },
+  'master-mecanica':    { hasTipo: true,  labels: { servico: '🔧 Serviço (ex: Revisão, Alinhamento)', produto: '📦 Peça / Item com Estoque', title: 'Nome do Serviço ou Peça', cat: 'Categoria (ex: Serviço, Peça, Revisão)', price: 'Preço (ex: R$ 250,00)' } },
+  'master-marcenaria':  { hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Projeto / Serviço', cat: 'Categoria (ex: Cozinha, Dormitório, Escritório)', price: 'Preço Estimado / Sob Consulta' } },
+  'master-solarenergia':{ hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Kit / Serviço', cat: 'Categoria (ex: Kit Fotovoltaico, Instalação)', price: 'Valor Estimado (ex: R$ 12.000)' } },
+  'basico-chaveiro':    { hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Serviço', cat: 'Categoria (ex: Residencial, Automotivo, Cofre)', price: 'Preço (ex: R$ 70,00)' } },
+  'basico-guincho':     { hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Serviço', cat: 'Categoria (ex: Guincho, Carga de Bateria, Pane Seca)', price: 'Preço (ex: R$ 150,00)' } },
+  'pro-imobiliaria':    { hasTipo: false, onlyServicos: true, labels: { title: 'Nome / Ref. do Imóvel', cat: 'Tipo (ex: Apartamento, Casa, Comercial)', price: 'Valor (ex: Venda: R$ 2.450.000)' } },
+  'pro-clinica':        { hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Procedimento / Serviço', cat: 'Especialidade (ex: Estética Dental, Harmonização)', price: 'Valor / Sob Consulta' } },
+  'pro-petshop':        { hasTipo: true,  labels: { servico: '🐾 Serviço (ex: Banho e Tosa, Consulta)', produto: '📦 Produto com Estoque (ex: Ração, Acessório)', title: 'Nome do Serviço ou Produto', cat: 'Categoria (ex: Banho, Ração, Acessório)', price: 'Preço (ex: R$ 60,00)' } },
+  'pro-hamburgueria':   { hasTipo: false, onlyServicos: true, labels: { title: 'Nome do Item do Cardápio', cat: 'Categoria (ex: Burger, Bebida, Sobremesa)', price: 'Preço (ex: R$ 34,90)' } }
+};
+
+function adaptCatalogFormToSegment(slug) {
+  var cfg = SEGMENT_CONFIG[slug] || { hasTipo: true };
+  var labels = cfg.labels || {};
+
+  var groupTipo = document.getElementById('tipo-grp');
+  var labelTitle = document.getElementById('label-n-title');
+  var newCat = document.getElementById('n-cat');
+  var newPrice = document.getElementById('n-price');
+  var groupEstoque = document.getElementById('estoque-grp');
+  var addTitle = document.getElementById('add-item-title');
+
+  if (cfg.onlyServicos) {
+    if (addTitle) addTitle.textContent = 'Itens do Catálogo';
+  } else if (cfg.hasTipo) {
+    if (addTitle) addTitle.textContent = 'Serviços & Produtos do Catálogo';
+  }
+
+  if (cfg.hasTipo) {
+    if (groupTipo) groupTipo.style.display = 'block';
+    var sel = document.getElementById('n-tipo');
+    if (sel && sel.options.length >= 2) {
+      sel.options[0].text = labels.servico || '💇 Serviço / Atendimento';
+      sel.options[1].text = labels.produto || '📦 Produto com Estoque';
+      sel.value = 'servico';
+    }
+    if (groupEstoque) groupEstoque.style.display = 'none';
+  } else {
+    if (groupTipo) groupTipo.style.display = 'none';
+    if (groupEstoque) groupEstoque.style.display = 'none';
+  }
+
+  if (labels.title && labelTitle) labelTitle.textContent = labels.title;
+  if (labels.cat && newCat) newCat.placeholder = labels.cat;
+  if (labels.price && newPrice) newPrice.placeholder = labels.price;
+}
+
 // ─── INICIALIZA CAMPOS COM DADOS DO DEMO ─────────────────────────────────────
 function initFields() {
   document.getElementById('f-nome').value = _defaults.nome || '';
@@ -544,11 +593,15 @@ function renderCatalog() {
   }
   el.innerHTML = catalog.map(function(item, idx) {
     var isP = item.tipo === 'produto';
+    var tipoBadge = isP
+      ? '<span style="background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.4); color:#fbbf24; font-size:0.68rem; font-weight:800; padding:2px 6px; border-radius:6px; margin-left:6px;">📦 ' + (item.estoque !== undefined ? item.estoque + ' un.' : 'Produto') + '</span>'
+      : '<span style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color:#6ee7b7; font-size:0.68rem; font-weight:800; padding:2px 6px; border-radius:6px; margin-left:6px;">✂️ Serviço</span>';
+
     return '<div class="item-row">' +
       '<img src="'+(item.image||'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=80')+'" onerror="this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=80'">' +
       '<div style="flex:1;min-width:0">' +
-        '<div style="font-weight:700;font-size:0.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+item.title+'</div>' +
-        '<div style="font-size:0.7rem;color:#64748b">'+(item.priceStr||'')+(isP?' · 📦 '+(item.estoque||0)+' un.':'')+'</div>' +
+        '<div style="font-weight:700;font-size:0.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;">' + item.title + tipoBadge + '</div>' +
+        '<div style="font-size:0.7rem;color:#64748b">' + (item.categoria || 'Geral') + ' · ' + (item.priceStr||'') + '</div>' +
       '</div>' +
       '<button class="btn-del" onclick="removeItem('+idx+')"><i class="fa-solid fa-trash"></i></button>' +
     '</div>';
@@ -558,11 +611,17 @@ function renderCatalog() {
 function addItem() {
   var title = document.getElementById('n-title').value.trim();
   if (!title) { alert('Digite o nome do item!'); return; }
-  var tipo = document.getElementById('n-tipo').value;
+
+  var cfg = SEGMENT_CONFIG['pro-petshop'] || { hasTipo: true };
+  var tipoEl = document.getElementById('n-tipo');
+  var tipo = (cfg.hasTipo && tipoEl) ? tipoEl.value : 'servico';
+  var estoqueEl = document.getElementById('n-estoque');
+  var estoque = (tipo === 'produto' && estoqueEl) ? (parseInt(estoqueEl.value) || 0) : undefined;
+
   catalog.push({
     title: title,
     tipo: tipo,
-    estoque: tipo === 'produto' ? parseInt(document.getElementById('n-estoque').value)||0 : undefined,
+    estoque: estoque,
     categoria: document.getElementById('n-cat').value.trim() || (tipo === 'produto' ? 'Produto' : 'Serviço'),
     priceStr: document.getElementById('n-price').value.trim() || 'Sob Consulta',
     image: document.getElementById('n-img').value.trim() || ''
@@ -570,6 +629,8 @@ function addItem() {
   document.getElementById('n-title').value = '';
   document.getElementById('n-price').value = '';
   document.getElementById('n-img').value = '';
+  if (estoqueEl) estoqueEl.value = '10';
+
   renderCatalog();
   preview();
 }
@@ -588,6 +649,7 @@ function exportJSON() {
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 initFields();
+adaptCatalogFormToSegment('pro-petshop');
 renderCatalog();
 // Marca swatch da cor inicial
 var initialColor = _defaults.corTema || '#10b981';
