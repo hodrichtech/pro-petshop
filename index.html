@@ -21,116 +21,70 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
     
-    /* THEMES */
-    body.theme-dark { --bg: #070a12; --card-bg: rgba(15, 23, 42, 0.85); --accent: #f59e0b; --accent-glow: rgba(245, 158, 11, 0.25); --text: #f8fafc; --text-sub: #94a3b8; --border: rgba(255, 255, 255, 0.08); --primary: #f59e0b; }
-    body.theme-light { --bg: #f8fafc; --card-bg: #ffffff; --accent: #d97706; --accent-glow: rgba(217, 119, 6, 0.25); --text: #0f172a; --text-sub: #475569; --border: rgba(0, 0, 0, 0.1); --primary: #d97706; }
-    body.theme-vibrant { --bg: #0b0f19; --card-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9)); --accent: #38bdf8; --accent-glow: rgba(56, 189, 248, 0.25); --text: #ffffff; --text-sub: #cbd5e1; --border: rgba(56, 189, 248, 0.3); --primary: #38bdf8; }
+    body.theme-dark { --bg: #070a12; --card-bg: rgba(15, 23, 42, 0.85); --primary: #38bdf8; --accent: #7dd3fc; --text: #f8fafc; --subtext: #94a3b8; --border: rgba(255, 255, 255, 0.08); }
+    body.theme-light { --bg: #f8fafc; --card-bg: #ffffff; --primary: #0284c7; --accent: #0369a1; --text: #0f172a; --subtext: #475569; --border: rgba(0, 0, 0, 0.1); }
+    body.theme-vibrant { --bg: #0b0f19; --card-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9)); --primary: #f59e0b; --accent: #38bdf8; --text: #ffffff; --subtext: #cbd5e1; --border: rgba(56, 189, 248, 0.3); }
 
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+    
+    /* FIX NATIVE SELECT DROPDOWN OPTION VISIBILITY */
+    select option {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      padding: 12px;
+    }
+    body.theme-light select option {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
 
-    /* INTEGRATED STICKY TOPBAR - ALWAYS AT TOP OF SCREEN, ZERO OVERLAPPING */
-    .demo-topbar { position: sticky; top: 0; left: 0; width: 100%; background: #0f172a; border-bottom: 2px solid var(--accent); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; z-index: 99999; box-shadow: 0 4px 20px rgba(0,0,0,0.6); transition: background-color 0.3s, border-color 0.3s; }
-    .topbar-label { font-size: 0.88rem; font-weight: 800; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+    .demo-topbar { position: sticky; top: 0; left: 0; width: 100%; background: #0f172a; border-bottom: 2px solid var(--primary); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; z-index: 99999; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+    .topbar-label { font-size: 0.88rem; font-weight: 800; color: #7dd3fc; display: flex; align-items: center; gap: 8px; }
     .topbar-options { display: flex; gap: 8px; flex-wrap: wrap; }
-    .theme-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: #f8fafc; padding: 8px 14px; border-radius: 12px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-    .theme-btn.active { background: linear-gradient(135deg, var(--accent), #d97706); border-color: var(--accent); color: #000; box-shadow: 0 4px 14px rgba(245,158,11,0.4); }
+    .theme-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: #f8fafc; padding: 8px 14px; border-radius: 12px; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
+    .theme-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
-    /* LIGHT THEME STYLES */
-    body.theme-light .demo-topbar { background: #ffffff; border-bottom: 2px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    body.theme-light .topbar-label { color: #0f172a; }
-    body.theme-light .theme-btn { background: #f1f5f9; border-color: #cbd5e1; color: #334155; }
-    body.theme-light .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-
-    /* VIBRANT THEME STYLES */
-    body.theme-vibrant .demo-topbar { background: #0b0f19; border-bottom: 2px solid var(--accent); }
-    body.theme-vibrant .topbar-label { color: #38bdf8; }
-    body.theme-vibrant .theme-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #ffffff; }
-    body.theme-vibrant .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #000000; }
-
-    .hero-banner { width:100%; height:240px; background-size:cover; background-position:center; position:relative; }
-    .hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,10,18,0.1) 0%, var(--bg) 100%); }
-    .container { max-width: 1000px; margin:0 auto; padding: 0 20px; position:relative; z-index:2; }
-
+    .hero-banner { width:100%; height:220px; background-size:cover; background-position:center; position:relative; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,10,18,0.2) 0%, var(--bg) 100%); }
+    .container { max-width: 960px; margin:0 auto; padding: 0 20px; position:relative; z-index:2; }
     .profile-header { display:flex; align-items:flex-end; gap:20px; margin-top:-75px; margin-bottom:24px; flex-wrap:wrap; }
-    .avatar { width:130px; height:130px; border-radius:24px; border:3px solid var(--accent); object-fit:cover; box-shadow:0 10px 25px var(--accent-glow); }
-    .badge-pro { background:rgba(245,158,11,0.15); border:1px solid var(--accent); color:#fbbf24; font-size:0.75rem; font-weight:800; padding:4px 12px; border-radius:20px; margin-bottom:8px; display:inline-block; }
-    .social-links { display:flex; align-items:center; gap:16px; margin-top:10px; }
-    
-    /* SEARCH & FILTER CONTROLS */
-    .controls-bar { background: var(--card-bg); border: 1px solid var(--border); padding: 18px; border-radius: 20px; margin-bottom: 28px; backdrop-filter: blur(12px); display: flex; flex-direction: column; gap: 14px; }
-    .search-input-box { position: relative; width: 100%; }
-    .search-input-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-sub); }
-    .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 12px 16px 12px 44px; border-radius: 12px; color: var(--text); font-size: 0.92rem; outline: none; transition: border-color 0.2s; }
-    .search-input:focus { border-color: var(--accent); }
-    
-    .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-sub); padding: 8px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-    .pill-btn.active { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 4px 12px var(--accent-glow); }
+    .avatar { width:130px; height:130px; border-radius:24px; border:3px solid var(--primary); object-fit:cover; box-shadow: 0 10px 30px rgba(56,189,248,0.3); }
 
-    /* GRID DE IMÓVEIS */
-    .grid-props { display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:22px; margin-bottom:32px; }
-    .prop-card { background: var(--card-bg); border:1px solid var(--border); border-radius:20px; overflow:hidden; display:flex; flex-direction:column; backdrop-filter:blur(12px); transition: transform 0.2s, border-color 0.2s; }
-    .prop-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-    
-    .prop-img-wrapper { position: relative; width: 100%; height: 210px; cursor: pointer; overflow: hidden; }
-    .prop-img { width:100%; height:100%; object-fit:cover; transition: transform 0.3s; }
-    .prop-card:hover .prop-img { transform: scale(1.05); }
-    .prop-img-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); }
+    .filter-bar { background:var(--card-bg); border:1px solid var(--border); border-radius:20px; padding:18px; margin-bottom:28px; display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .filter-input { flex:1; min-width:200px; background:rgba(255,255,255,0.05); border:1px solid var(--border); padding:12px 16px; border-radius:12px; color:var(--text); outline:none; font-size:0.9rem; }
 
-    .prop-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-    .prop-cat { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
-    .prop-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 8px; cursor: pointer; line-height: 1.3; }
-    .prop-title:hover { color: var(--accent); }
-    .prop-desc { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    
-    .btn-video-sm { color: #ef4444; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px; width: fit-content; }
-    .btn-video-sm:hover { background: rgba(239, 68, 68, 0.25); }
+    .grid-props { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:22px; margin-bottom:40px; }
+    .prop-card { background:var(--card-bg); border:1px solid var(--border); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; }
+    .prop-img-wrapper { position:relative; cursor:pointer; overflow:hidden; }
+    .prop-img { width:100%; height:180px; object-fit:cover; transition:transform 0.3s; }
+    .prop-card:hover .prop-img { transform:scale(1.05); }
+    .prop-img-badge { position:absolute; bottom:10px; right:10px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:10px; backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.15); }
 
-    .prop-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 16px; gap: 10px; }
-    .prop-price { font-size: 1.15rem; font-weight: 800; color: var(--accent); }
-    .prop-actions { display: flex; gap: 8px; }
-    
-    .btn-detail { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-    .btn-detail:hover { background: rgba(255, 255, 255, 0.15); }
-    
-    .btn-visit { background: #10b981; color: #fff; border: none; padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-    .btn-visit:hover { background: #059669; }
+    .prop-body { padding:18px; flex:1; display:flex; flex-direction:column; }
+    .prop-cat { font-size:0.75rem; font-weight:800; color:var(--accent); text-transform:uppercase; margin-bottom:4px; }
+    .prop-title { font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:8px; cursor:pointer; }
+    .prop-desc { font-size:0.85rem; color:var(--subtext); margin-bottom:14px; line-height:1.5; flex:1; }
+    .prop-footer { display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:14px; gap:8px; flex-wrap:wrap; }
+    .prop-price { font-size:1.15rem; font-weight:800; color:var(--accent); }
+    .prop-actions { display:flex; gap:8px; }
+    .btn-detail { background:rgba(255,255,255,0.08); color:var(--text); border:1px solid var(--border); padding:8px 12px; border-radius:10px; font-weight:700; font-size:0.78rem; cursor:pointer; }
+    .btn-visit { background:linear-gradient(135deg, #25D366, #16a34a); color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:800; font-size:0.78rem; display:inline-flex; align-items:center; gap:4px; }
 
-    /* MODAL DE PÁGINA EXCLUSIVA DO IMÓVEL */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .modal-card { background: #0f172a; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
-    .modal-close-btn { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
-    
-    .modal-hero-img { width: 100%; height: 320px; object-fit: cover; border-top-left-radius: 24px; border-top-right-radius: 24px; }
-    .modal-body { padding: 28px; }
-    .modal-badge { background: rgba(245,158,11,0.15); border: 1px solid var(--accent); color: #fbbf24; font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
-    .modal-title { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .modal-price { font-size: 1.5rem; font-weight: 800; color: #fbbf24; margin-bottom: 20px; }
-    
-    .modal-specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 18px; border-radius: 16px; margin-bottom: 24px; }
-    .spec-item { display: flex; align-items: center; gap: 10px; }
-    .spec-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(245,158,11,0.15); color: #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .spec-label { font-size: 0.75rem; color: var(--text-sub); display: block; }
-    .spec-val { font-size: 0.88rem; font-weight: 700; color: #fff; }
+    footer { text-align:center; padding:32px 20px; border-top:1px solid var(--border); color:var(--subtext); font-size:0.85rem; margin-top:40px; }
 
-    .modal-desc { font-size: 0.95rem; color: #cbd5e1; line-height: 1.7; margin-bottom: 28px; white-space: pre-line; }
-
-    .modal-action-buttons { display: flex; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--border); padding-top: 20px; }
-    .btn-maps { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 14px 20px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; flex: 1; justify-content: center; }
-    .btn-maps:hover { background: rgba(239, 68, 68, 0.25); }
-    
-    .btn-cta-zap { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 14px 24px; border-radius: 12px; font-weight: 800; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; flex: 2; justify-content: center; box-shadow: 0 8px 20px rgba(16,185,129,0.3); }
+    /* PROPERTY MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(7,10,18,0.85); backdrop-filter:blur(10px); z-index:999999; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-card { background:#0f172a; border:1px solid var(--primary); border-radius:24px; max-width:600px; width:100%; max-height:90vh; overflow-y:auto; padding:24px; color:#fff; position:relative; }
+    .modal-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.1); border:none; color:#fff; width:36px; height:36px; border-radius:50%; font-size:1.2rem; cursor:pointer; }
   </style>
 </head>
 <body class="theme-dark">
-
-  <!-- BARRA DE TOPO INTEGRADA E FIXA NO TOPO DA TELA (STICKY) -->
   <div class="demo-topbar">
     <div class="topbar-label"><i class="fa-solid fa-palette"></i> Estilo do Layout:</div>
     <div class="topbar-options">
       <button type="button" onclick="switchTheme('dark', this)" class="theme-btn active">🌙 Noturno</button>
-      <button type="button" onclick="switchTheme('light', this)" class="theme-btn">☀️ Claro</button>
-      <button type="button" onclick="switchTheme('vibrant', this)" class="theme-btn">⚡ Vibrante</button>
+      <button type="button" onclick="switchTheme('light', this)" class="theme-btn ">☀️ Claro</button>
+      <button type="button" onclick="switchTheme('vibrant', this)" class="theme-btn ">⚡ Vibrante</button>
     </div>
   </div>
 
@@ -142,37 +96,33 @@
     <div class="profile-header">
       <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=300&auto=format&fit=crop&q=80" class="avatar" alt="Pet Care & Veterinária (Demonstrativo)">
       <div style="flex:1;">
-        <span class="badge-pro">Plano Pro 💎 — Carteira de Imóveis & Consultoria</span>
-        <h1 style="font-family:'Outfit',sans-serif; font-size:2rem; font-weight:800; color:var(--text);">Pet Care & Veterinária (Demonstrativo)</h1>
+        <span style="background:rgba(56,189,248,0.15); border:1px solid var(--primary); color:var(--accent); font-size:0.75rem; font-weight:800; padding:4px 14px; border-radius:20px;">Plano Pro 🏆 — Carteira de Imóveis & Consultoria</span>
+        <h1 style="font-family:'Outfit',sans-serif; font-size:2rem; font-weight:800; color:var(--text); margin-top:6px;">Pet Care & Veterinária (Demonstrativo)</h1>
         <div style="color:var(--accent); font-weight:700; margin-bottom:6px;">Pet Shop, Banho & Tosa e Leva & Traz • Florianópolis - SC</div>
-        <p style="font-size:0.88rem; color:var(--text-sub); line-height:1.4;">Banho e tosa profissional com ozonioterapia, consultas veterinárias, vacinas importadas e táxi pet com busca e entrega domiciliar.</p>
-        <div class="social-links">
-          <a href="https://instagram.com/petcarevet_demo" target="_blank" style="color:#e1306c; font-size:1.4rem;"><i class="fa-brands fa-instagram"></i></a>
-          
-          
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTROLES DE BUSCA E FILTROS DE CATEGORIA -->
-    <div class="controls-bar">
-      <div class="search-input-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" onkeyup="filterProperties()" placeholder="Buscar por palavra-chave, código (Ref: PRO-101) ou cidade..." class="search-input">
-      </div>
-
-      <div class="filter-pills" id="categoryPills">
-        <button type="button" class="pill-btn active" onclick="filterCategory('ALL', this)">🏢 Todos os Itens</button>
-      </div>
-    </div>
-
-    <!-- GRID DE IMÓVEIS / PRODUTOS -->
-    <h2 style="font-family:'Outfit',sans-serif; font-size:1.4rem; margin-bottom:18px; color:var(--text); display:flex; align-items:center; gap:10px;">
-      <i class="fa-solid fa-house-circle-check" style="color:var(--accent)"></i> Catálogo de Oportunidades
-    </h2>
-
-    <div class="grid-props" id="propsGrid">
+        
+    <div style="display:flex; gap:10px; margin-top:8px; align-items:center;">
+      <a href="https://instagram.com/petcarevet_demo" target="_blank" title="Instagram Oficial" style="color:#e1306c; background:rgba(225,48,108,0.12); border:1px solid rgba(225,48,108,0.3); width:38px; height:38px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; font-size:1.2rem;"><i class="fa-brands fa-instagram"></i></a>
       
+      
+    </div>
+  
+      </div>
+    </div>
+
+    <!-- BARRA DE FILTRO DE IMÓVEIS / SERVIÇOS -->
+    <div class="filter-bar">
+      <i class="fa-solid fa-magnifying-glass" style="color:var(--accent)"></i>
+      <input type="text" id="search-input" onkeyup="filterProps()" class="filter-input" placeholder="Buscar por título, bairro ou descrição...">
+      <select id="cat-filter" onchange="filterProps()" class="filter-input" style="max-width:180px;">
+        <option value="">Todas as Categorias</option>
+        <option value="Apartamento">Apartamento</option>
+        <option value="Casa">Casa</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Terreno">Terreno</option>
+      </select>
+    </div>
+
+    <div class="grid-props" id="props-grid">
     <div class="prop-card" data-cat="Banho & Tosa" data-title="banho & tosa completo + hidratação de pelagem" data-desc="corte de unhas, limpeza de ouvidos, escovação dentária e hidratação com shampoo hipoalergênico.">
       <div class="prop-img-wrapper" onclick="openPropertyModal(0)">
         <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&auto=format&fit=crop&q=80" class="prop-img" alt="Banho & Tosa Completo + Hidratação de Pelagem">
@@ -220,73 +170,45 @@
         </div>
       </div>
     </div>
-  
-    </div>
-
-    <div style="text-align:center; margin-top:40px; margin-bottom:20px;">
-      <a href="https://vitrine.hodrichdigital.tech/" target="_blank" style="color:var(--text-sub); text-decoration:none; font-size:0.88rem; font-weight:700;">⚡ Desenvolvido por Vitrine Digital — Hodrich Digital</a>
-    </div>
   </div>
 
-  <!-- MODAL DE PÁGINA EXCLUSIVA DO IMÓVEL -->
-  <div class="modal-overlay" id="propModal" onclick="closeModalOnBg(event)">
+    <footer>
+      ⚡ Desenvolvido por <a href="https://vitrine.hodrichdigital.tech/" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700;">Vitrine Digital — Hodrich Digital</a>
+    </footer>
+  </div>
+
+  <!-- MODAL DE DETALHES DO IMÓVEL -->
+  <div class="modal-overlay" id="prop-modal">
     <div class="modal-card">
-      <button type="button" class="modal-close-btn" onclick="closePropertyModal()">&times;</button>
-      <div id="modalContent"></div>
+      <button type="button" class="modal-close" onclick="closePropertyModal()">&times;</button>
+      <img id="modal-img" src="" style="width:100%; height:220px; object-fit:cover; border-radius:16px; margin-bottom:16px;">
+      <span id="modal-cat" class="prop-cat"></span>
+      <h2 id="modal-title" style="font-family:'Outfit',sans-serif; font-size:1.5rem; margin-bottom:8px;"></h2>
+      <p id="modal-desc" style="color:var(--subtext); font-size:0.9rem; line-height:1.6; margin-bottom:16px;"></p>
+      <div style="font-size:1.4rem; font-weight:800; color:var(--accent); margin-bottom:20px;" id="modal-price"></div>
+      <a id="modal-wa-link" href="" target="_blank" class="btn-wa-main" style="width:100%; text-align:center; justify-content:center; display:flex; align-items:center; gap:8px; background:linear-gradient(135deg, #25D366, #16a34a); color:#fff; padding:14px; border-radius:14px; text-decoration:none; font-weight:800;">
+        <i class="fa-brands fa-whatsapp fa-lg"></i> Solicitar Agendamento / Visita no WhatsApp
+      </a>
     </div>
   </div>
 
   <script>
-    var rawCatalog = "%5B%7B%22title%22%3A%22Banho%20%26%20Tosa%20Completo%20%2B%20Hidrata%C3%A7%C3%A3o%20de%20Pelagem%22%2C%22desc%22%3A%22Corte%20de%20unhas%2C%20limpeza%20de%20ouvidos%2C%20escova%C3%A7%C3%A3o%20dent%C3%A1ria%20e%20hidrata%C3%A7%C3%A3o%20com%20shampoo%20hipoalerg%C3%AAnico.%22%2C%22categoria%22%3A%22Banho%20%26%20Tosa%22%2C%22priceStr%22%3A%22R%24%2090%2C00%22%2C%22price%22%3A90%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1516734212186-a967f81ad0d7%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%2C%7B%22title%22%3A%22Consulta%20Veterin%C3%A1ria%20Preventiva%20%2B%20Vacina%20V10%22%2C%22desc%22%3A%22Avalia%C3%A7%C3%A3o%20cl%C3%ADnica%20de%20sa%C3%BAde%20geral%2C%20ausculta%C3%A7%C3%A3o%20card%C3%ADaca%20e%20aplica%C3%A7%C3%A3o%20de%20vacina%20polivalente%20importada.%22%2C%22categoria%22%3A%22Veterin%C3%A1ria%22%2C%22priceStr%22%3A%22R%24%20180%2C00%22%2C%22price%22%3A180%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1548199973-03cce0bbc87b%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%5D";
-    var propertiesData = [];
-    try {
-      propertiesData = JSON.parse(decodeURIComponent(rawCatalog));
-    } catch(e) {
-      console.error("Error parsing catalog JSON:", e);
-    }
+    var propsData = JSON.parse(decodeURIComponent("%5B%7B%22title%22%3A%22Banho%20%26%20Tosa%20Completo%20%2B%20Hidrata%C3%A7%C3%A3o%20de%20Pelagem%22%2C%22desc%22%3A%22Corte%20de%20unhas%2C%20limpeza%20de%20ouvidos%2C%20escova%C3%A7%C3%A3o%20dent%C3%A1ria%20e%20hidrata%C3%A7%C3%A3o%20com%20shampoo%20hipoalerg%C3%AAnico.%22%2C%22categoria%22%3A%22Banho%20%26%20Tosa%22%2C%22priceStr%22%3A%22R%24%2090%2C00%22%2C%22price%22%3A90%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1516734212186-a967f81ad0d7%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%2C%7B%22title%22%3A%22Consulta%20Veterin%C3%A1ria%20Preventiva%20%2B%20Vacina%20V10%22%2C%22desc%22%3A%22Avalia%C3%A7%C3%A3o%20cl%C3%ADnica%20de%20sa%C3%BAde%20geral%2C%20ausculta%C3%A7%C3%A3o%20card%C3%ADaca%20e%20aplica%C3%A7%C3%A3o%20de%20vacina%20polivalente%20importada.%22%2C%22categoria%22%3A%22Veterin%C3%A1ria%22%2C%22priceStr%22%3A%22R%24%20180%2C00%22%2C%22price%22%3A180%2C%22image%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1548199973-03cce0bbc87b%3Fw%3D400%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%7D%5D"));
     
-    var phone = "5513996351877";
-    var mapsUrl = "https://www.google.com/maps?q=Florianopolis+SC";
-
-    // Build unique category pills
-    (function initCategoryPills() {
-      var cats = ['ALL'];
-      propertiesData.forEach(function(p) {
-        var c = p.categoria || 'Geral';
-        if (!cats.includes(c)) cats.push(c);
-      });
-
-      if (cats.length > 2) {
-        var pillsContainer = document.getElementById('categoryPills');
-        var html = '';
-        cats.forEach(function(cat, idx) {
-          var label = (cat === 'ALL') ? '🏢 Todos os Imóveis' : cat;
-          var activeClass = (idx === 0) ? 'active' : '';
-          html += '<button type="button" class="pill-btn ' + activeClass + '" onclick="filterCategory('' + cat + '', this)">' + label + '</button>';
-        });
-        pillsContainer.innerHTML = html;
-      }
-    })();
-
-    function filterCategory(cat, btn) {
-      document.querySelectorAll('.pill-btn').forEach(function(b) { b.classList.remove('active'); });
-      if (btn) btn.classList.add('active');
-
-      document.querySelectorAll('.prop-card').forEach(function(card) {
-        if (cat === 'ALL' || card.dataset.cat === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    function filterProperties() {
-      var query = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.prop-card').forEach(function(card) {
-        var title = card.dataset.title || '';
-        var desc = card.dataset.desc || '';
-        if (title.includes(query) || desc.includes(query)) {
+    function filterProps() {
+      var query = (document.getElementById('search-input').value || '').toLowerCase();
+      var cat = document.getElementById('cat-filter').value;
+      var cards = document.querySelectorAll('.prop-card');
+      
+      cards.forEach(function(card) {
+        var title = card.getAttribute('data-title') || '';
+        var desc = card.getAttribute('data-desc') || '';
+        var cardCat = card.getAttribute('data-cat') || '';
+        
+        var matchesSearch = !query || title.indexOf(query) !== -1 || desc.indexOf(query) !== -1;
+        var matchesCat = !cat || cardCat === cat;
+        
+        if (matchesSearch && matchesCat) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -295,44 +217,19 @@
     }
 
     function openPropertyModal(idx) {
-      var item = propertiesData[idx];
+      var item = propsData[idx];
       if (!item) return;
-
-      var videoLinkHtml = item.video ? '<a href="' + item.video + '" target="_blank" class="btn-maps" style="color:#ef4444; border-color:rgba(239,68,68,0.4);"><i class="fa-brands fa-youtube"></i> Assistir Tour em Vídeo</a>' : '';
-
-      var modalHtml = '<img src="' + (item.image || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800') + '" class="modal-hero-img" alt="' + item.title + '">' +
-        '<div class="modal-body">' +
-          '<span class="modal-badge"><i class="fa-solid fa-star"></i> Imóvel Exclusivo — ' + (item.categoria || 'Alto Padrão') + '</span>' +
-          '<h2 class="modal-title">' + item.title + '</h2>' +
-          '<div class="modal-price">' + (item.priceStr || item.price || 'Sob Consulta') + '</div>' +
-          '<div class="modal-specs-grid">' +
-            '<div class="spec-item"><div class="spec-icon"><i class="fa-solid fa-ruler-combined"></i></div><div><span class="spec-label">Área Privativa</span><span class="spec-val">220 m²</span></div></div>' +
-            '<div class="spec-item"><div class="spec-icon"><i class="fa-solid fa-bed"></i></div><div><span class="spec-label">Dormitórios</span><span class="spec-val">4 Suítes</span></div></div>' +
-            '<div class="spec-item"><div class="spec-icon"><i class="fa-solid fa-car"></i></div><div><span class="spec-label">Vagas Demarcadas</span><span class="spec-val">3 Vagas (c/ EV)</span></div></div>' +
-            '<div class="spec-item"><div class="spec-icon"><i class="fa-solid fa-shield-halved"></i></div><div><span class="spec-label">Segurança</span><span class="spec-val">Portaria 24h</span></div></div>' +
-          '</div>' +
-          '<div class="modal-desc">' + item.desc + '</div>' +
-          '<div class="modal-action-buttons">' +
-            '<a href="' + mapsUrl + '" target="_blank" class="btn-maps"><i class="fa-solid fa-map-location-dot"></i> Ver Localização no Google Maps</a>' +
-            videoLinkHtml +
-            '<a href="https://wa.me/' + phone + '?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20visita%20para%20o%20Im%C3%B3vel:%20' + encodeURIComponent(item.title) + '" target="_blank" class="btn-cta-zap"><i class="fa-brands fa-whatsapp"></i> Agendar Visita no Zap</a>' +
-          '</div>' +
-        '</div>';
-
-      document.getElementById('modalContent').innerHTML = modalHtml;
-      document.getElementById('propModal').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      document.getElementById('modal-img').src = item.image || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600';
+      document.getElementById('modal-cat').innerText = item.categoria || 'Imóvel Exclusivo';
+      document.getElementById('modal-title').innerText = item.title;
+      document.getElementById('modal-desc').innerText = item.desc || '';
+      document.getElementById('modal-price').innerText = item.priceStr || item.price || '';
+      document.getElementById('modal-wa-link').href = 'https://wa.me/' + "5513996351877" + '?text=' + encodeURIComponent('Olá! Gostaria de agendar uma visita para o Imóvel: ' + item.title);
+      document.getElementById('prop-modal').style.display = 'flex';
     }
 
     function closePropertyModal() {
-      document.getElementById('propModal').style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
-
-    function closeModalOnBg(e) {
-      if (e.target && e.target.id === 'propModal') {
-        closePropertyModal();
-      }
+      document.getElementById('prop-modal').style.display = 'none';
     }
   </script>
 </body>
