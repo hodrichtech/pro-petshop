@@ -126,54 +126,39 @@
           <input type="color" id="f-color-picker" style="width:48px;height:42px;border:none;background:transparent;cursor:pointer;border-radius:8px;" oninput="setColor(this.value)" onchange="setColor(this.value)">
           <input id="f-color-hex" class="fi" style="font-family:monospace;font-weight:800;" readonly>
         </div>
-                <div style="margin-bottom: 12px;">
-          <div style="font-size: 0.78rem; font-weight: 800; color: #fbbf24; margin-bottom: 6px;">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Presets de Temas Prontos (1-Clique)
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 6px;">
-            <button type="button" onclick="setColor('#6366f1')" style="background:#0f172a; border:1.5px solid #6366f1; border-radius:8px; padding:6px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700;">
-              <div style="height:10px; background:linear-gradient(90deg,#6366f1,#4f46e5); border-radius:3px; margin-bottom:4px;"></div>
-              🌌 Dark Neon
-            </button>
-            <button type="button" onclick="setColor('#0284c7')" style="background:#0f172a; border:1.5px solid #0284c7; border-radius:8px; padding:6px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700;">
-              <div style="height:10px; background:linear-gradient(90deg,#0284c7,#38bdf8); border-radius:3px; margin-bottom:4px;"></div>
-              🌿 Minimal Clean
-            </button>
-            <button type="button" onclick="setColor('#f59e0b')" style="background:#0f172a; border:1.5px solid #f59e0b; border-radius:8px; padding:6px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700;">
-              <div style="height:10px; background:linear-gradient(90deg,#f59e0b,#d97706); border-radius:3px; margin-bottom:4px;"></div>
-              👑 Gold Luxury
-            </button>
-            <button type="button" onclick="setColor('#ea580c')" style="background:#0f172a; border:1.5px solid #ea580c; border-radius:8px; padding:6px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700;">
-              <div style="height:10px; background:linear-gradient(90deg,#ea580c,#f97316); border-radius:3px; margin-bottom:4px;"></div>
-              🍊 Warm Delivery
-            </button>
-            <button type="button" onclick="setColor('#0d9488')" style="background:#0f172a; border:1.5px solid #0d9488; border-radius:8px; padding:6px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700;">
-              <div style="height:10px; background:linear-gradient(90deg,#0d9488,#14b8a6); border-radius:3px; margin-bottom:4px;"></div>
-              🩺 Clinical Clean
-            </button>
-          </div>
-        </div>
-                <div style="margin-top: 14px; margin-bottom: 14px;">
-          <div style="font-size: 0.78rem; font-weight: 800; color: #fbbf24; margin-bottom: 6px;">
-            <i class="fa-solid fa-layer-group"></i> 📐 Estilo da Arquitetura do Layout
+                        <div style="margin-bottom: 14px;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #fbbf24; margin-bottom: 8px;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Presets de Temas Prontos (Transformação Total do Layout em 1-Clique)
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px;">
-            <button type="button" onclick="setLayoutStyle('hero-grid')" style="background:#0f172a; border:2px solid #6366f1; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
-              <div style="font-size:1.2rem; margin-bottom:2px;">🖼️</div>
-              <strong>Hero Grid</strong>
-              <div style="font-size:0.65rem; color:#94a3b8;">Banner + Fotos</div>
+            <button type="button" onclick="applyThemePreset('dark-neon')" style="background:#0f172a; border:2px solid #6366f1; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
+              <div style="height:10px; background:linear-gradient(90deg,#6366f1,#4f46e5); border-radius:4px; margin-bottom:4px;"></div>
+              <strong>🌌 Dark Neon</strong>
+              <div style="font-size:0.65rem; color:#94a3b8;">Fundo Noturno</div>
             </button>
 
-            <button type="button" onclick="setLayoutStyle('compact-list')" style="background:#0f172a; border:2px solid #0284c7; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
-              <div style="font-size:1.2rem; margin-bottom:2px;">📄</div>
-              <strong>Lista Compacta</strong>
-              <div style="font-size:0.65rem; color:#94a3b8;">Estilo Cardápio</div>
+            <button type="button" onclick="applyThemePreset('minimal-clean')" style="background:#0f172a; border:2px solid #0284c7; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
+              <div style="height:10px; background:linear-gradient(90deg,#0284c7,#38bdf8); border-radius:4px; margin-bottom:4px;"></div>
+              <strong>🌿 Minimal Clean</strong>
+              <div style="font-size:0.65rem; color:#94a3b8;">Fundo Branco</div>
             </button>
 
-            <button type="button" onclick="setLayoutStyle('glassmorphism')" style="background:#0f172a; border:2px solid #f59e0b; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
-              <div style="font-size:1.2rem; margin-bottom:2px;">✨</div>
-              <strong>Glass Luxo</strong>
-              <div style="font-size:0.65rem; color:#94a3b8;">Vidro & Glow</div>
+            <button type="button" onclick="applyThemePreset('gold-luxury')" style="background:#0f172a; border:2px solid #f59e0b; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
+              <div style="height:10px; background:linear-gradient(90deg,#f59e0b,#d97706); border-radius:4px; margin-bottom:4px;"></div>
+              <strong>👑 Gold Luxury</strong>
+              <div style="font-size:0.65rem; color:#94a3b8;">Vidro & Ouro</div>
+            </button>
+
+            <button type="button" onclick="applyThemePreset('warm-delivery')" style="background:#0f172a; border:2px solid #ea580c; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
+              <div style="height:10px; background:linear-gradient(90deg,#ea580c,#f97316); border-radius:4px; margin-bottom:4px;"></div>
+              <strong>🍊 Warm Delivery</strong>
+              <div style="font-size:0.65rem; color:#94a3b8;">Lista Cardápio</div>
+            </button>
+
+            <button type="button" onclick="applyThemePreset('clinical-clean')" style="background:#0f172a; border:2px solid #0d9488; border-radius:8px; padding:8px; color:#fff; cursor:pointer; font-size:0.7rem; font-weight:700; text-align:center;">
+              <div style="height:10px; background:linear-gradient(90deg,#0d9488,#14b8a6); border-radius:4px; margin-bottom:4px;"></div>
+              <strong>🩺 Clinical Clean</strong>
+              <div style="font-size:0.65rem; color:#94a3b8;">Organizado</div>
             </button>
           </div>
         </div>
