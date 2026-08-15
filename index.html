@@ -126,9 +126,36 @@
     body.btn-neon .btn-wa-main, body.btn-neon .btn-add-item { border-radius: 14px !important; box-shadow: 0 0 20px var(--primary) !important; }
     body.btn-gradient .btn-wa-main, body.btn-gradient .btn-add-item { border-radius: 14px !important; background: linear-gradient(135deg, var(--primary), #000) !important; }
 
-  </style>
+  
+    /* NO-CODE DYNAMIC CUSTOMIZATION ENGINE */
+    
+    
+
+    /* HEROPATTERNS SVG BACKGROUND TEXTURES */
+    body.pat-grid {
+      background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 0), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px) !important;
+      background-size: 20px 20px, 20px 20px, 20px 20px !important;
+    }
+    body.pat-dots {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px) !important;
+      background-size: 16px 16px !important;
+    }
+    body.pat-waves {
+      background-image: repeating-radial-gradient(circle at 0 0, transparent 0, rgba(255,255,255,0.06) 10px, transparent 20px) !important;
+    }
+    body.pat-hex {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.12) 2px, transparent 2px) !important;
+      background-size: 24px 24px !important;
+    }
+
+    /* BUTTON STYLING VARIANTS */
+    body.btn-pill .btn-wa-main, body.btn-pill .btn-add-item { border-radius: 30px !important; }
+    body.btn-square .btn-wa-main, body.btn-square .btn-add-item { border-radius: 6px !important; }
+    body.btn-neon .btn-wa-main, body.btn-neon .btn-add-item { border-radius: 14px !important; box-shadow: 0 0 20px var(--primary) !important; }
+    body.btn-gradient .btn-wa-main, body.btn-gradient .btn-add-item { border-radius: 14px !important; background: linear-gradient(135deg, var(--primary), #000) !important; }
+</style>
 </head>
-<body class="theme-dark">
+<body class="theme-dark  btn-pill ">
   <div class="demo-topbar">
     <div class="topbar-label"><i class="fa-solid fa-palette"></i> Estilo do Layout:</div>
     <div class="topbar-options">
