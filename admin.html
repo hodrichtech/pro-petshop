@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Demo — Pet Care & Veterinária (Demonstrativo)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --brand: #10b981; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+    body { background:#070a12; color:#f8fafc; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+
+    header { background:rgba(15,23,42,0.98); border-bottom:3px solid var(--brand); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; flex-wrap:wrap; gap:10px; transition:border-color 0.3s; }
+    .logo { font-family:'Outfit',sans-serif; font-size:1.15rem; font-weight:800; color:#fff; text-decoration:none; }
+    .logo span { color:var(--brand); transition:color 0.3s; }
+    .demo-badge { background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.5); color:#fbbf24; padding:5px 12px; border-radius:20px; font-size:0.74rem; font-weight:800; display:flex; align-items:center; gap:6px; }
+    .btn-h { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:#f8fafc; padding:8px 14px; border-radius:10px; font-size:0.8rem; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s; }
+    .btn-h:hover { background:rgba(255,255,255,0.14); }
+    .btn-vitrine { background:linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 65%, #000)); border:none; color:#fff; }
+
+    .split { display:flex; flex:1; overflow:hidden; }
+
+    /* EDITOR */
+    .editor { width:400px; min-width:360px; overflow-y:auto; border-right:1px solid rgba(255,255,255,0.08); padding:16px; background:#060910; flex-shrink:0; }
+
+    /* MOBILE PREVIEW */
+    .preview-col { flex:1; background:#0b0f1a; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:16px; }
+    .preview-label { font-size:0.72rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+    .phone { width:310px; height:620px; background:#000; border:10px solid #1e293b; border-radius:36px; box-shadow:0 30px 80px rgba(0,0,0,0.9); overflow:hidden; display:flex; flex-direction:column; }
+    .phone-notch { height:20px; background:#1e293b; width:40%; margin:0 auto; border-radius:0 0 12px 12px; flex-shrink:0; }
+    #previewFrame { flex:1; width:100%; border:none; }
+
+    /* TABS */
+    .tabs { display:flex; gap:4px; margin-bottom:14px; background:rgba(255,255,255,0.03); padding:4px; border-radius:12px; border:1px solid rgba(255,255,255,0.07); }
+    .tab { flex:1; background:transparent; border:none; color:#64748b; padding:8px 4px; border-radius:8px; font-weight:700; font-size:0.74rem; cursor:pointer; transition:all 0.2s; text-align:center; }
+    .tab.active { background:var(--brand); color:#fff; }
+    .step { display:none; }
+    .step.active { display:block; }
+
+    /* FORM */
+    .card { background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px; margin-bottom:12px; }
+    .card-title { font-weight:800; font-size:0.85rem; color:#fff; margin-bottom:10px; display:flex; align-items:center; gap:7px; }
+    .fg { margin-bottom:9px; }
+    .fg label { display:block; font-size:0.73rem; font-weight:700; color:#64748b; margin-bottom:3px; }
+    .fi { width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:9px; padding:8px 11px; color:#fff; font-size:0.83rem; outline:none; transition:border-color 0.2s; }
+    .fi:focus { border-color:var(--brand); }
+
+    /* PROGRESS */
+    .prog { height:5px; background:rgba(255,255,255,0.07); border-radius:10px; margin-bottom:12px; overflow:hidden; }
+    .prog-f { height:100%; background:var(--brand); border-radius:10px; transition:width 0.4s, background 0.3s; width:20%; }
+
+    /* SWATCHES */
+    .swatches { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .sw { width:36px; height:36px; border-radius:10px; border:3px solid transparent; cursor:pointer; transition:transform 0.15s, border-color 0.15s; }
+    .sw:hover, .sw.sel { transform:scale(1.2); border-color:#fff; }
+
+    /* CATALOG */
+    .item-row { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:9px; border-radius:10px; display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+    .item-row img { width:38px; height:38px; border-radius:7px; object-fit:cover; flex-shrink:0; }
+    .btn-del { background:rgba(239,68,68,0.18); border:none; color:#f87171; width:28px; height:28px; border-radius:7px; cursor:pointer; flex-shrink:0; }
+    .btn-add { background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; border:none; padding:9px; border-radius:10px; font-weight:800; cursor:pointer; width:100%; margin-top:6px; font-size:0.84rem; }
+
+    @media(max-width:760px){ .split{flex-direction:column;height:auto;overflow:visible;} .editor{width:100%;max-width:100%;} .preview-col{min-height:600px;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">⚡ Vitrine<span>Gestão</span></a>
+  <div class="demo-badge"><i class="fa-solid fa-flask"></i> Demonstrativo Sandbox — Edições não são salvas</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="https://hodrichtech.github.io/pro-petshop/" target="_blank" class="btn-h btn-vitrine"><i class="fa-solid fa-eye"></i> Ver Vitrine</a>
+    <button class="btn-h" onclick="exportJSON()"><i class="fa-solid fa-download"></i> Baixar Demo</button>
+  </div>
+</header>
+
+<div class="split">
+  <!-- EDITOR -->
+  <div class="editor">
+    <div class="prog"><div id="prog-f" class="prog-f"></div></div>
+    <div class="tabs">
+      <button id="tab-1" class="tab active" onclick="goStep(1)">🏪 Empresa</button>
+      <button id="tab-2" class="tab" onclick="goStep(2)">🎨 Visual</button>
+      <button id="tab-3" class="tab" onclick="goStep(3)">📦 Catálogo</button>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="step-1" class="step active">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-store" style="color:var(--brand)"></i> Dados da Empresa</div>
+        <div class="fg"><label>Nome</label><input id="f-nome" class="fi" oninput="preview()"></div>
+        <div class="fg"><label>Segmento / Nicho</label><input id="f-nicho" class="fi" oninput="preview()"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="fg"><label>Cidade</label><input id="f-cidade" class="fi" oninput="preview()"></div>
+          <div class="fg"><label>WhatsApp</label><input id="f-whatsapp" class="fi" oninput="preview()"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="fg"><label>Instagram</label><input id="f-instagram" class="fi" oninput="preview()"></div>
+          <div class="fg"><label>YouTube</label><input id="f-youtube" class="fi" oninput="preview()"></div>
+        </div>
+        <div class="fg"><label>Descrição</label><textarea id="f-desc" class="fi" rows="3" oninput="preview()"></textarea></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn-h btn-vitrine" onclick="goStep(2)">Visual 🎨 ➔</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step-2" class="step">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-image" style="color:var(--brand)"></i> Imagens</div>
+        <div class="fg"><label>URL da Logo / Foto</label><input id="f-foto" class="fi" oninput="preview()"></div>
+        <div class="fg"><label>URL da Capa / Banner</label><input id="f-capa" class="fi" oninput="preview()"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-palette" style="color:var(--brand)"></i> Cor da Marca</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <input type="color" id="f-color-picker" style="width:48px;height:42px;border:none;background:transparent;cursor:pointer;border-radius:8px;" oninput="setColor(this.value)" onchange="setColor(this.value)">
+          <input id="f-color-hex" class="fi" style="font-family:monospace;font-weight:800;" readonly>
+        </div>
+        <div class="swatches">
+          <div class="sw" style="background:#8b5cf6" onclick="setColor('#8b5cf6')"></div>
+          <div class="sw" style="background:#10b981" onclick="setColor('#10b981')"></div>
+          <div class="sw" style="background:#38bdf8" onclick="setColor('#38bdf8')"></div>
+          <div class="sw" style="background:#f59e0b" onclick="setColor('#f59e0b')"></div>
+          <div class="sw" style="background:#ef4444" onclick="setColor('#ef4444')"></div>
+          <div class="sw" style="background:#ec4899" onclick="setColor('#ec4899')"></div>
+          <div class="sw" style="background:#06b6d4" onclick="setColor('#06b6d4')"></div>
+          <div class="sw" style="background:#84cc16" onclick="setColor('#84cc16')"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between">
+        <button class="btn-h" onclick="goStep(1)">⬅ Empresa</button>
+        <button class="btn-h btn-vitrine" onclick="goStep(3)">Catálogo 📦 ➔</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step-3" class="step">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-boxes-stacked" style="color:var(--brand)"></i> Itens do Catálogo</div>
+        <div id="catalog-list"></div>
+        <div style="border-top:1px dashed rgba(255,255,255,0.1);padding-top:12px;margin-top:8px;">
+          <div style="font-size:0.78rem;font-weight:800;color:#fbbf24;margin-bottom:8px;"><i class="fa-solid fa-plus"></i> Adicionar Item</div>
+          <div class="fg">
+            <label>Tipo</label>
+            <select id="n-tipo" class="fi" onchange="toggleEstoque(this.value)">
+              <option value="servico">💇 Serviço / Atendimento</option>
+              <option value="produto">📦 Produto com Estoque</option>
+            </select>
+          </div>
+          <div class="fg"><label>Nome do Item</label><input id="n-title" class="fi" placeholder="ex: Corte Feminino, Kit Shampoo..."></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="fg"><label>Categoria</label><input id="n-cat" class="fi" placeholder="Serviço, Produto..."></div>
+            <div class="fg"><label>Preço</label><input id="n-price" class="fi" placeholder="R$ 80,00"></div>
+          </div>
+          <div id="estoque-grp" style="display:none" class="fg">
+            <label style="color:#fbbf24;font-weight:800;">📦 Quantidade em Estoque</label>
+            <input type="number" id="n-estoque" class="fi" value="10" min="0" style="border-color:#f59e0b">
+          </div>
+          <div class="fg"><label>URL da Foto</label><input id="n-img" class="fi" placeholder="https://..."></div>
+          <button class="btn-add" onclick="addItem()"><i class="fa-solid fa-plus-circle"></i> Confirmar Item</button>
+        </div>
+      </div>
+      <button class="btn-h" onclick="goStep(2)">⬅ Visual</button>
+    </div>
+
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-col">
+    <div class="preview-label"><i class="fa-solid fa-mobile-screen-button" style="color:var(--brand)"></i> Preview ao Vivo — Atualiza em Tempo Real</div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe id="previewFrame" sandbox="allow-same-origin allow-scripts"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DADOS INICIAIS DO DEMONSTRATIVO ─────────────────────────────────────────
+var _defaults = {"slug":"pro-petshop","plano":"pro","nome":"Pet Care & Veterinária (Demonstrativo)","nicho":"Pet Shop, Banho & Tosa e Leva & Traz","cidade":"Florianópolis - SC","descricao":"Banho e tosa profissional com ozonioterapia, consultas veterinárias, vacinas importadas e táxi pet com busca e entrega domiciliar.","whatsapp":"5513996351877","pix":"13996351877","instagram":"petcarevet_demo","mapsUrl":"https://www.google.com/maps?q=Florianopolis+SC","foto":"https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=300&auto=format&fit=crop&q=80","capa":"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&auto=format&fit=crop&q=80","horarios":"Segunda a Sábado — 08h às 19h","endereco":"Rua dos Pets Fictícia, 150 — Florianópolis","catalogo":[{"title":"Banho & Tosa Completo + Hidratação de Pelagem","desc":"Corte de unhas, limpeza de ouvidos, escovação dentária e hidratação com shampoo hipoalergênico.","categoria":"Banho & Tosa","priceStr":"R$ 90,00","price":90,"image":"https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&auto=format&fit=crop&q=80"},{"title":"Consulta Veterinária Preventiva + Vacina V10","desc":"Avaliação clínica de saúde geral, auscultação cardíaca e aplicação de vacina polivalente importada.","categoria":"Veterinária","priceStr":"R$ 180,00","price":180,"image":"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&auto=format&fit=crop&q=80"}],"galeria":[],"depoimentos":[{"author":"Tutor Fictício G","text":"Meu pet ama a equipe de banho e tosa. O serviço de leva e traz é extremamente pontual!"}]};
+var catalog = JSON.parse(JSON.stringify(_defaults.catalogo || []));
+
+// ─── RENDERERS (INLINED) ─────────────────────────────────────────────────────
+/**
+ * Client-Side Renderers — Vitrine Digital
+ * IMPORTANT: Uses string concatenation (NOT backtick template literals)
+ * to avoid conflicts when this file is inlined via Node.js template literals.
+ */
+
+function clientRenderBasico(mei) {
+  var phone = mei.whatsapp || '5513996351877';
+  var theme = mei.layoutTema || 'dark';
+  var nome = mei.nome || 'Minha Empresa';
+  var nicho = mei.nicho || 'Serviços';
+  var cidade = mei.cidade || '';
+  var descricao = mei.descricao || 'Descrição da sua empresa.';
+  var foto = mei.foto || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=300';
+  var capa = mei.capa || 'https://images.unsplash.com/photo-1558002038-1055907df827?w=800';
+  var cor = mei.corTema || '#10b981';
+
+  var instagramLink = (mei.instagram && mei.instagram.trim()) ? '<a href="' + (mei.instagram.startsWith('http') ? mei.instagram : 'https://instagram.com/' + mei.instagram) + '" target="_blank" style="color:#e1306c; font-size:1.4rem;"><i class="fa-brands fa-instagram"></i></a>' : '';
+  var youtubeLink = (mei.youtube && mei.youtube.trim()) ? '<a href="' + (mei.youtube.startsWith('http') ? mei.youtube : 'https://youtube.com/' + mei.youtube) + '" target="_blank" style="color:#ef4444; font-size:1.4rem;"><i class="fa-brands fa-youtube"></i></a>' : '';
+
+  return '<!DOCTYPE html>' +
+  '<html lang="pt-BR"><head>' +
+  '<meta charset="UTF-8">' +
+  '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  '<title>' + nome + ' — Cartão Digital</title>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">' +
+  '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">' +
+  '<style>' +
+  '* { margin:0; padding:0; box-sizing:border-box; font-family:Inter,sans-serif; }' +
+  ':root { --p: ' + cor + '; }' +
+  'body { background:#070a12; color:#f8fafc; min-height:100vh; padding-bottom:40px; }' +
+  '.hero { width:100%; height:180px; background:url(' + capa + ') center/cover no-repeat; position:relative; }' +
+  '.hero-grad { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,#070a12); }' +
+  '.box { max-width:600px; margin:0 auto; padding:0 20px; }' +
+  '.avatar { width:110px; height:110px; border-radius:50%; object-fit:cover; border:4px solid var(--p); box-shadow:0 8px 30px ' + cor + '55; margin-top:-55px; display:block; }' +
+  '.badge { display:inline-flex; align-items:center; gap:6px; background:' + cor + '22; border:1px solid ' + cor + '66; color:' + cor + '; font-size:0.75rem; font-weight:800; padding:5px 14px; border-radius:30px; margin:14px 0 8px; }' +
+  '.name { font-family:Outfit,sans-serif; font-size:1.9rem; font-weight:800; color:#fff; margin-bottom:4px; }' +
+  '.sub { color:' + cor + '; font-weight:700; margin-bottom:16px; }' +
+  '.desc { background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:16px; font-size:0.9rem; color:#94a3b8; line-height:1.6; margin-bottom:20px; }' +
+  '.btn-wa { display:flex; align-items:center; justify-content:center; gap:12px; background:linear-gradient(135deg,' + cor + ',' + cor + 'aa); color:#fff; text-decoration:none; padding:16px; border-radius:16px; font-weight:800; font-size:1.05rem; margin-bottom:16px; }' +
+  '.socials { display:flex; justify-content:center; gap:16px; margin-top:12px; }' +
+  'footer { text-align:center; margin-top:30px; color:#475569; font-size:0.78rem; }' +
+  '</style></head>' +
+  '<body>' +
+  '<div class="hero"><div class="hero-grad"></div></div>' +
+  '<div class="box">' +
+  '<img src="' + foto + '" class="avatar" alt="' + nome + '">' +
+  '<div class="badge"><i class="fa-solid fa-circle-check"></i> Plano Básico — Cartão Digital</div>' +
+  '<h1 class="name">' + nome + '</h1>' +
+  '<div class="sub"><i class="fa-solid fa-briefcase"></i> ' + nicho + (cidade ? ' · ' + cidade : '') + '</div>' +
+  '<div class="desc">' + descricao + '</div>' +
+  '<a href="https://wa.me/' + phone + '" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp fa-xl"></i> Falar no WhatsApp</a>' +
+  ((instagramLink || youtubeLink) ? '<div class="socials">' + instagramLink + youtubeLink + '</div>' : '') +
+  '<footer>⚡ Vitrine Digital — GitHub Pages</footer>' +
+  '</div></body></html>';
+}
+
+function clientRenderMaster(mei) {
+  var phone = mei.whatsapp || '5513996351877';
+  var nome = mei.nome || 'Minha Empresa';
+  var nicho = mei.nicho || 'Serviços';
+  var cidade = mei.cidade || '';
+  var descricao = mei.descricao || '';
+  var foto = mei.foto || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=300';
+  var capa = mei.capa || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800';
+  var cor = mei.corTema || '#8b5cf6';
+  var theme = mei.layoutTema || 'dark';
+  var catalog = mei.catalogo || [];
+
+  var instagramBtn = (mei.instagram && mei.instagram.trim()) ? '<a href="' + (mei.instagram.startsWith('http') ? mei.instagram : 'https://instagram.com/' + mei.instagram) + '" target="_blank" style="color:#e1306c; font-size:1.3rem;"><i class="fa-brands fa-instagram"></i></a>' : '';
+  var youtubeBtn = (mei.youtube && mei.youtube.trim()) ? '<a href="' + (mei.youtube.startsWith('http') ? mei.youtube : 'https://youtube.com/' + mei.youtube) + '" target="_blank" style="color:#ef4444; font-size:1.3rem;"><i class="fa-brands fa-youtube"></i></a>' : '';
+
+  var servicos = catalog.filter(function(i) { return i.tipo !== 'produto'; });
+  var produtos = catalog.filter(function(i) { return i.tipo === 'produto'; });
+
+  var servicosHtml = servicos.map(function(item) {
+    return '<div style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column;">' +
+      '<img src="' + (item.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400') + '" style="width:100%; height:140px; object-fit:cover;">' +
+      '<div style="padding:14px; flex:1; display:flex; flex-direction:column;">' +
+        '<div style="font-size:0.72rem; font-weight:800; color:' + cor + '; text-transform:uppercase; margin-bottom:4px;">✂️ Serviço</div>' +
+        '<div style="font-weight:700; color:#fff; margin-bottom:4px;">' + item.title + '</div>' +
+        '<div style="font-size:0.8rem; color:#94a3b8; flex:1;">' + (item.desc || '') + '</div>' +
+        '<div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; margin-top:10px;">' +
+          '<span style="font-weight:800; color:' + cor + ';">' + (item.priceStr || '') + '</span>' +
+          '<a href="https://wa.me/' + phone + '?text=' + encodeURIComponent('Olá! Quero solicitar: ' + item.title) + '" target="_blank" style="background:' + cor + '; color:#fff; text-decoration:none; padding:7px 12px; border-radius:8px; font-size:0.78rem; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> Agendar</a>' +
+        '</div>' +
+      '</div></div>';
+  }).join('');
+
+  var produtosHtml = produtos.map(function(item) {
+    return '<div style="background:rgba(15,23,42,0.85); border:1px solid ' + cor + '44; border-radius:16px; overflow:hidden; display:flex; flex-direction:column;">' +
+      '<img src="' + (item.image || 'https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400') + '" style="width:100%; height:140px; object-fit:cover;">' +
+      '<div style="padding:14px; flex:1; display:flex; flex-direction:column;">' +
+        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+          '<span style="font-size:0.72rem; font-weight:800; color:' + cor + '; text-transform:uppercase;">📦 Produto</span>' +
+          '<span style="background:' + cor + '22; border:1px solid ' + cor + '55; color:' + cor + '; font-size:0.7rem; font-weight:800; padding:3px 8px; border-radius:10px;">' + (item.estoque || 0) + ' un.</span>' +
+        '</div>' +
+        '<div style="font-weight:700; color:#fff; margin-bottom:4px;">' + item.title + '</div>' +
+        '<div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; margin-top:auto;">' +
+          '<span style="font-weight:800; color:' + cor + ';">' + (item.priceStr || '') + '</span>' +
+          '<a href="https://wa.me/' + phone + '?text=' + encodeURIComponent('Olá! Quero comprar: ' + item.title) + '" target="_blank" style="background:linear-gradient(135deg,' + cor + ',' + cor + 'aa); color:#fff; text-decoration:none; padding:7px 12px; border-radius:8px; font-size:0.78rem; font-weight:700;"><i class="fa-solid fa-cart-shopping"></i> Comprar</a>' +
+        '</div>' +
+      '</div></div>';
+  }).join('');
+
+  return '<!DOCTYPE html>' +
+  '<html lang="pt-BR"><head>' +
+  '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  '<title>' + nome + ' — Vitrine Master</title>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">' +
+  '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">' +
+  '<style>' +
+  '* { margin:0; padding:0; box-sizing:border-box; font-family:Inter,sans-serif; }' +
+  ':root { --p: ' + cor + '; }' +
+  'body { background:#070a12; color:#f8fafc; min-height:100vh; padding-bottom:40px; }' +
+  '.hero { width:100%; height:200px; background:url(' + capa + ') center/cover no-repeat; position:relative; }' +
+  '.hero-g { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,#070a12); }' +
+  '.cnt { max-width:900px; margin:0 auto; padding:0 18px; }' +
+  '.profile { display:flex; align-items:flex-end; gap:16px; margin-top:-60px; margin-bottom:20px; flex-wrap:wrap; }' +
+  '.avatar { width:110px; height:110px; border-radius:20px; object-fit:cover; border:3px solid ' + cor + '; box-shadow:0 8px 30px ' + cor + '55; }' +
+  '.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; margin-bottom:30px; }' +
+  'footer { text-align:center; padding:20px; color:#475569; font-size:0.78rem; }' +
+  '</style></head><body>' +
+  '<div class="hero"><div class="hero-g"></div></div>' +
+  '<div class="cnt">' +
+  '<div class="profile">' +
+    '<img src="' + foto + '" class="avatar" alt="' + nome + '">' +
+    '<div style="flex:1;">' +
+      '<span style="background:' + cor + '22; border:1px solid ' + cor + '66; color:' + cor + '; font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:20px;">⭐ Plano Master</span>' +
+      '<h1 style="font-family:Outfit,sans-serif; font-size:1.8rem; font-weight:800; color:#fff; margin:6px 0 2px;">' + nome + '</h1>' +
+      '<div style="color:' + cor + '; font-weight:700; font-size:0.9rem;">' + nicho + (cidade ? ' · ' + cidade : '') + '</div>' +
+      ((instagramBtn || youtubeBtn) ? '<div style="display:flex; gap:12px; margin-top:8px;">' + instagramBtn + youtubeBtn + '</div>' : '') +
+    '</div>' +
+  '</div>' +
+  (servicos.length > 0 ? '<h2 style="font-family:Outfit,sans-serif; font-size:1.2rem; margin-bottom:14px; color:#fff;"><i class="fa-solid fa-scissors" style="color:' + cor + '"></i> Serviços & Atendimentos</h2><div class="grid">' + servicosHtml + '</div>' : '') +
+  (produtos.length > 0 ? '<h2 style="font-family:Outfit,sans-serif; font-size:1.2rem; margin:20px 0 14px; color:#fff;"><i class="fa-solid fa-boxes-stacked" style="color:' + cor + '"></i> Produtos em Estoque</h2><div class="grid">' + produtosHtml + '</div>' : '') +
+  (catalog.length === 0 ? '<div style="text-align:center; padding:40px; color:#475569;"><i class="fa-solid fa-boxes-stacked fa-2x"></i><p style="margin-top:12px;">Adicione serviços e produtos no painel ao lado!</p></div>' : '') +
+  '<footer>⚡ Vitrine Digital — GitHub Pages</footer>' +
+  '</div></body></html>';
+}
+
+function clientRenderEcommerce(mei) {
+  var phone = mei.whatsapp || '5513996351877';
+  var nome = mei.nome || 'Minha Empresa';
+  var nicho = mei.nicho || 'Gastronomia';
+  var cidade = mei.cidade || '';
+  var foto = mei.foto || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300';
+  var capa = mei.capa || 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800';
+  var cor = mei.corTema || '#ef4444';
+  var catalog = mei.catalogo || [];
+
+  var menuHtml = catalog.map(function(item) {
+    return '<div style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column;">' +
+      '<img src="' + (item.image || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400') + '" style="width:100%; height:150px; object-fit:cover;">' +
+      '<div style="padding:14px; flex:1; display:flex; flex-direction:column;">' +
+        '<div style="font-size:0.72rem; font-weight:800; color:' + cor + '; text-transform:uppercase; margin-bottom:4px;">' + (item.categoria || 'Cardápio') + '</div>' +
+        '<div style="font-weight:700; color:#fff; margin-bottom:6px;">' + item.title + '</div>' +
+        '<div style="font-size:0.8rem; color:#94a3b8; margin-bottom:12px; flex:1;">' + (item.desc || '') + '</div>' +
+        '<div style="display:flex; align-items:center; justify-content:space-between;">' +
+          '<span style="font-size:1.1rem; font-weight:800; color:' + cor + ';">' + (item.priceStr || '') + '</span>' +
+          '<a href="https://wa.me/' + phone + '?text=' + encodeURIComponent('Quero pedir: ' + item.title) + '" target="_blank" style="background:' + cor + '; color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-size:0.8rem; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> Pedir</a>' +
+        '</div>' +
+      '</div></div>';
+  }).join('');
+
+  return '<!DOCTYPE html>' +
+  '<html lang="pt-BR"><head>' +
+  '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  '<title>' + nome + ' — Delivery</title>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">' +
+  '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">' +
+  '<style>' +
+  '* { margin:0; padding:0; box-sizing:border-box; font-family:Inter,sans-serif; }' +
+  'body { background:#070a12; color:#f8fafc; min-height:100vh; padding-bottom:40px; }' +
+  '.hero { width:100%; height:180px; background:url(' + capa + ') center/cover no-repeat; position:relative; }' +
+  '.hero-g { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,#070a12); }' +
+  '.cnt { max-width:900px; margin:0 auto; padding:0 18px; }' +
+  '.profile { display:flex; align-items:flex-end; gap:16px; margin-top:-55px; margin-bottom:20px; }' +
+  '.avatar { width:100px; height:100px; border-radius:16px; object-fit:cover; border:3px solid ' + cor + '; }' +
+  '.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:30px; }' +
+  'footer { text-align:center; padding:20px; color:#475569; font-size:0.78rem; }' +
+  '</style></head><body>' +
+  '<div class="hero"><div class="hero-g"></div></div>' +
+  '<div class="cnt">' +
+  '<div class="profile">' +
+    '<img src="' + foto + '" class="avatar" alt="' + nome + '">' +
+    '<div>' +
+      '<span style="background:' + cor + '22; border:1px solid ' + cor + '66; color:' + cor + '; font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:20px;">🛒 E-Commerce & Delivery</span>' +
+      '<h1 style="font-family:Outfit,sans-serif; font-size:1.8rem; font-weight:800; color:#fff; margin:6px 0 2px;">' + nome + '</h1>' +
+      '<div style="color:' + cor + '; font-weight:700; font-size:0.9rem;">' + nicho + (cidade ? ' · ' + cidade : '') + '</div>' +
+    '</div>' +
+  '</div>' +
+  '<h2 style="font-family:Outfit,sans-serif; font-size:1.2rem; margin-bottom:14px; color:#fff;"><i class="fa-solid fa-utensils" style="color:' + cor + '"></i> Cardápio</h2>' +
+  '<div class="grid">' + (menuHtml || '<div style="color:#475569; text-align:center; padding:30px;">Adicione itens no painel!</div>') + '</div>' +
+  '<footer>⚡ Vitrine Digital — GitHub Pages</footer>' +
+  '</div></body></html>';
+}
+
+function clientRenderPro(mei) {
+  var phone = mei.whatsapp || '5513996351877';
+  var nome = mei.nome || 'Minha Empresa';
+  var nicho = mei.nicho || 'Consultoria';
+  var cidade = mei.cidade || '';
+  var foto = mei.foto || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300';
+  var capa = mei.capa || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800';
+  var cor = mei.corTema || '#38bdf8';
+  var catalog = mei.catalogo || [];
+
+  var catalogHtml = catalog.map(function(item) {
+    return '<div style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column;">' +
+      '<img src="' + (item.image || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400') + '" style="width:100%; height:150px; object-fit:cover;">' +
+      '<div style="padding:14px; flex:1; display:flex; flex-direction:column;">' +
+        '<div style="font-size:0.72rem; font-weight:800; color:' + cor + '; text-transform:uppercase; margin-bottom:4px;">' + (item.categoria || 'Destaque') + '</div>' +
+        '<div style="font-weight:700; color:#fff; margin-bottom:4px;">' + item.title + '</div>' +
+        '<div style="font-size:0.8rem; color:#94a3b8; margin-bottom:12px; flex:1;">' + (item.desc || '') + '</div>' +
+        '<div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;">' +
+          '<span style="font-weight:800; color:' + cor + ';">' + (item.priceStr || '') + '</span>' +
+          '<a href="https://wa.me/' + phone + '?text=' + encodeURIComponent('Olá! Tenho interesse em: ' + item.title) + '" target="_blank" style="background:#25D366; color:#fff; text-decoration:none; padding:7px 12px; border-radius:8px; font-size:0.78rem; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> Consultar</a>' +
+        '</div>' +
+      '</div></div>';
+  }).join('');
+
+  return '<!DOCTYPE html>' +
+  '<html lang="pt-BR"><head>' +
+  '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  '<title>' + nome + ' — Pro</title>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">' +
+  '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">' +
+  '<style>' +
+  '* { margin:0; padding:0; box-sizing:border-box; font-family:Inter,sans-serif; }' +
+  'body { background:#070a12; color:#f8fafc; min-height:100vh; padding-bottom:40px; }' +
+  '.hero { width:100%; height:180px; background:url(' + capa + ') center/cover no-repeat; position:relative; }' +
+  '.hero-g { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,#070a12); }' +
+  '.cnt { max-width:900px; margin:0 auto; padding:0 18px; }' +
+  '.profile { display:flex; align-items:flex-end; gap:16px; margin-top:-55px; margin-bottom:20px; }' +
+  '.avatar { width:100px; height:100px; border-radius:16px; object-fit:cover; border:3px solid ' + cor + '; }' +
+  '.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:30px; }' +
+  'footer { text-align:center; padding:20px; color:#475569; font-size:0.78rem; }' +
+  '</style></head><body>' +
+  '<div class="hero"><div class="hero-g"></div></div>' +
+  '<div class="cnt">' +
+  '<div class="profile">' +
+    '<img src="' + foto + '" class="avatar" alt="' + nome + '">' +
+    '<div>' +
+      '<span style="background:' + cor + '22; border:1px solid ' + cor + '66; color:' + cor + '; font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:20px;">🏆 Plano Pro</span>' +
+      '<h1 style="font-family:Outfit,sans-serif; font-size:1.8rem; font-weight:800; color:#fff; margin:6px 0 2px;">' + nome + '</h1>' +
+      '<div style="color:' + cor + '; font-weight:700; font-size:0.9rem;">' + nicho + (cidade ? ' · ' + cidade : '') + '</div>' +
+    '</div>' +
+  '</div>' +
+  '<h2 style="font-family:Outfit,sans-serif; font-size:1.2rem; margin-bottom:14px; color:#fff;"><i class="fa-solid fa-briefcase" style="color:' + cor + '"></i> Catálogo de Serviços</h2>' +
+  '<div class="grid">' + (catalogHtml || '<div style="color:#475569; text-align:center; padding:30px;">Adicione itens no painel!</div>') + '</div>' +
+  '<footer>⚡ Vitrine Digital — GitHub Pages</footer>' +
+  '</div></body></html>';
+}
+
+
+// ─── INICIALIZA CAMPOS COM DADOS DO DEMO ─────────────────────────────────────
+function initFields() {
+  document.getElementById('f-nome').value = _defaults.nome || '';
+  document.getElementById('f-nicho').value = _defaults.nicho || '';
+  document.getElementById('f-cidade').value = _defaults.cidade || '';
+  document.getElementById('f-whatsapp').value = _defaults.whatsapp || '';
+  document.getElementById('f-instagram').value = _defaults.instagram || '';
+  document.getElementById('f-youtube').value = _defaults.youtube || '';
+  document.getElementById('f-desc').value = _defaults.descricao || '';
+  document.getElementById('f-foto').value = _defaults.foto || '';
+  document.getElementById('f-capa').value = _defaults.capa || '';
+  var cor = _defaults.corTema || '#10b981';
+  document.getElementById('f-color-picker').value = cor;
+  document.getElementById('f-color-hex').value = cor;
+}
+
+// ─── STEP NAVIGATION ─────────────────────────────────────────────────────────
+function goStep(n) {
+  for (var i = 1; i <= 3; i++) {
+    document.getElementById('step-'+i).classList.remove('active');
+    document.getElementById('tab-'+i).classList.remove('active');
+  }
+  document.getElementById('step-'+n).classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+}
+
+// ─── COR DA MARCA ────────────────────────────────────────────────────────────
+function setColor(hex) {
+  document.getElementById('f-color-picker').value = hex;
+  document.getElementById('f-color-hex').value = hex;
+  // Atualiza o painel admin instantaneamente
+  document.documentElement.style.setProperty('--brand', hex);
+  var s = document.getElementById('_brs');
+  if (!s) { s = document.createElement('style'); s.id = '_brs'; document.head.appendChild(s); }
+  s.textContent = '.tab.active{background:'+hex+'!important;box-shadow:0 3px 10px '+hex+'44!important}';
+  // Marca swatch selecionado
+  document.querySelectorAll('.sw').forEach(function(el) {
+    var bg = el.style.background.toLowerCase().replace(/s/g,'');
+    el.classList.toggle('sel', bg === hex.toLowerCase());
+  });
+  // Atualiza preview
+  preview();
+}
+
+// ─── COLETA DADOS DO FORMULÁRIO ───────────────────────────────────────────────
+function getData() {
+  return {
+    nome: document.getElementById('f-nome').value || _defaults.nome,
+    nicho: document.getElementById('f-nicho').value || _defaults.nicho,
+    cidade: document.getElementById('f-cidade').value || '',
+    whatsapp: document.getElementById('f-whatsapp').value || _defaults.whatsapp,
+    instagram: document.getElementById('f-instagram').value || '',
+    youtube: document.getElementById('f-youtube').value || '',
+    descricao: document.getElementById('f-desc').value || '',
+    foto: document.getElementById('f-foto').value || _defaults.foto || '',
+    capa: document.getElementById('f-capa').value || _defaults.capa || '',
+    corTema: document.getElementById('f-color-picker').value || '#10b981',
+    layoutTema: _defaults.layoutTema || 'dark',
+    plano: 'pro',
+    slug: 'pro-petshop',
+    catalogo: catalog
+  };
+}
+
+// ─── LIVE PREVIEW ─────────────────────────────────────────────────────────────
+function preview() {
+  var data = getData();
+  var html = '';
+  var plano = data.plano;
+  if (plano === 'master') html = clientRenderMaster(data);
+  else if (plano === 'ecommerce') html = clientRenderEcommerce(data);
+  else if (plano === 'pro') html = clientRenderPro(data);
+  else html = clientRenderBasico(data);
+
+  // Usa contentDocument.write para máxima compatibilidade
+  var iframe = document.getElementById('previewFrame');
+  iframe.contentDocument.open();
+  iframe.contentDocument.write(html);
+  iframe.contentDocument.close();
+
+  updateProgress(data);
+}
+
+// ─── PROGRESSO ────────────────────────────────────────────────────────────────
+function updateProgress(data) {
+  var score = 0;
+  if (data.nome) score += 25;
+  if (data.whatsapp && data.whatsapp.length >= 8) score += 25;
+  if (data.catalogo && data.catalogo.length > 0) score += 25;
+  if (data.foto || data.capa) score += 25;
+  document.getElementById('prog-f').style.width = score + '%';
+}
+
+// ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
+function toggleEstoque(val) {
+  document.getElementById('estoque-grp').style.display = val === 'produto' ? 'block' : 'none';
+}
+
+function renderCatalog() {
+  var el = document.getElementById('catalog-list');
+  if (!catalog.length) {
+    el.innerHTML = '<div style="color:#475569;font-size:0.8rem;text-align:center;padding:10px">Nenhum item. Adicione abaixo!</div>';
+    return;
+  }
+  el.innerHTML = catalog.map(function(item, idx) {
+    var isP = item.tipo === 'produto';
+    return '<div class="item-row">' +
+      '<img src="'+(item.image||'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=80')+'" onerror="this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=80'">' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="font-weight:700;font-size:0.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+item.title+'</div>' +
+        '<div style="font-size:0.7rem;color:#64748b">'+(item.priceStr||'')+(isP?' · 📦 '+(item.estoque||0)+' un.':'')+'</div>' +
+      '</div>' +
+      '<button class="btn-del" onclick="removeItem('+idx+')"><i class="fa-solid fa-trash"></i></button>' +
+    '</div>';
+  }).join('');
+}
+
+function addItem() {
+  var title = document.getElementById('n-title').value.trim();
+  if (!title) { alert('Digite o nome do item!'); return; }
+  var tipo = document.getElementById('n-tipo').value;
+  catalog.push({
+    title: title,
+    tipo: tipo,
+    estoque: tipo === 'produto' ? parseInt(document.getElementById('n-estoque').value)||0 : undefined,
+    categoria: document.getElementById('n-cat').value.trim() || (tipo === 'produto' ? 'Produto' : 'Serviço'),
+    priceStr: document.getElementById('n-price').value.trim() || 'Sob Consulta',
+    image: document.getElementById('n-img').value.trim() || ''
+  });
+  document.getElementById('n-title').value = '';
+  document.getElementById('n-price').value = '';
+  document.getElementById('n-img').value = '';
+  renderCatalog();
+  preview();
+}
+
+function removeItem(idx) { catalog.splice(idx, 1); renderCatalog(); preview(); }
+
+// ─── EXPORT ───────────────────────────────────────────────────────────────────
+function exportJSON() {
+  var data = getData();
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'pro-petshop-demo.json';
+  a.click();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+initFields();
+renderCatalog();
+// Marca swatch da cor inicial
+var initialColor = _defaults.corTema || '#10b981';
+document.querySelectorAll('.sw').forEach(function(el) {
+  var bg = el.style.background.toLowerCase().replace(/s/g,'');
+  if (bg === initialColor.toLowerCase()) el.classList.add('sel');
+});
+preview();
+</script>
+
+</body>
+</html>
