@@ -282,5 +282,71 @@
       document.getElementById('prop-modal').style.display = 'none';
     }
   </script>
+<div id="demo-switcher-widget" style="position: fixed; bottom: 20px; left: 20px; z-index: 999999;">
+  <button onclick="document.getElementById('demo-drawer-modal').style.display='flex'" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: #f8fafc; border: 1px solid rgba(255,255,255,0.2); padding: 10px 18px; border-radius: 50px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); backdrop-filter: blur(10px);">
+    <span style="font-size: 15px;">🎨</span> <span>Ver Outros 9 Modelos</span>
+  </button>
+</div>
+
+<div id="demo-drawer-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); z-index: 1000000; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: #0f172a; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; color: #fff; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); font-family: system-ui, -apple-system, sans-serif;">
+    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 14px;">
+      <div>
+        <h3 style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">🎨 Modelos Demonstrativos Prontos</h3>
+        <p style="font-size: 11px; color: #94a3b8; margin: 3px 0 0 0;">Escolha um segmento para explorar a vitrine ao vivo:</p>
+      </div>
+      <button onclick="document.getElementById('demo-drawer-modal').style.display='none'" style="background: #1e293b; color: #94a3b8; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+      <a href="https://hodrichtech.github.io/basico-chaveiro/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🔑 Chaveiro Express 24h</span>
+        <span style="font-size: 10px; background: #0284c7; color: #fff; padding: 2px 7px; border-radius: 99px;">Básico</span>
+      </a>
+      <a href="https://hodrichtech.github.io/basico-guincho/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🚨 Guincho & Socorro 24h</span>
+        <span style="font-size: 10px; background: #0284c7; color: #fff; padding: 2px 7px; border-radius: 99px;">Básico</span>
+      </a>
+      <a href="https://hodrichtech.github.io/master-salao/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">💇 Studio Beauty & Hair</span>
+        <span style="font-size: 10px; background: #7c3aed; color: #fff; padding: 2px 7px; border-radius: 99px;">Master</span>
+      </a>
+      <a href="https://hodrichtech.github.io/master-mecanica/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🔧 Auto Center & Mecânica</span>
+        <span style="font-size: 10px; background: #7c3aed; color: #fff; padding: 2px 7px; border-radius: 99px;">Master</span>
+      </a>
+      <a href="https://hodrichtech.github.io/master-marcenaria/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🪵 Marcenaria & Design</span>
+        <span style="font-size: 10px; background: #7c3aed; color: #fff; padding: 2px 7px; border-radius: 99px;">Master</span>
+      </a>
+      <a href="https://hodrichtech.github.io/master-solarenergia/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">☀️ Solar Tech — Energia Solar</span>
+        <span style="font-size: 10px; background: #7c3aed; color: #fff; padding: 2px 7px; border-radius: 99px;">Master</span>
+      </a>
+      <a href="https://hodrichtech.github.io/pro-imobiliaria/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🏢 Prime Imóveis & Consultoria</span>
+        <span style="font-size: 10px; background: #059669; color: #fff; padding: 2px 7px; border-radius: 99px;">Pro</span>
+      </a>
+      <a href="https://hodrichtech.github.io/pro-clinica/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🩺 Odonto & Estética Avançada</span>
+        <span style="font-size: 10px; background: #059669; color: #fff; padding: 2px 7px; border-radius: 99px;">Pro</span>
+      </a>
+      <a href="https://hodrichtech.github.io/pro-petshop/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🐾 Pet Care & Veterinária</span>
+        <span style="font-size: 10px; background: #059669; color: #fff; padding: 2px 7px; border-radius: 99px;">Pro</span>
+      </a>
+      <a href="https://hodrichtech.github.io/pro-hamburgueria/" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #f8fafc; border: 1px solid #334155;">
+        <span style="font-weight: 600; font-size: 13px;">🍔 Burger House Artesanal</span>
+        <span style="font-size: 10px; background: #ea580c; color: #fff; padding: 2px 7px; border-radius: 99px;">E-commerce</span>
+      </a>
+    </div>
+
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #1e293b; text-align: center;">
+      <a href="https://wa.me/5513996351877?text=Olá!%20Quero%20contratar%20minha%20Vitrine%20Digital%20exclusiva" target="_blank" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; font-weight: 700; font-size: 13px; padding: 10px 16px; border-radius: 8px; text-decoration: none; display: block; box-shadow: 0 4px 12px rgba(34,197,94,0.3);">
+        💬 Quero Meu Próprio Site Vitrine (R$ 47/mês)
+      </a>
+    </div>
+  </div>
+</div>
 </body>
 </html>
